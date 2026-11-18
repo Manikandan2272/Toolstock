@@ -22751,7 +22751,11 @@
     }
 
     header.bg-body {
+      position: sticky;
+      top: 0;
+      z-index: 1020;
       background: rgba(255, 255, 255, .88) !important;
+      backdrop-filter: blur(12px);
       border-color: #e3e9f8 !important
     }
 
@@ -23081,7 +23085,7 @@
       </div>
     </aside>
     <main class="flex-grow-1 d-flex flex-column" style="min-width:0">
-      <header class="bg-body border-bottom d-flex align-items-center justify-content-between px-3 px-lg-4"
+      <header class="sticky-top bg-body border-bottom d-flex align-items-center justify-content-between px-3 px-lg-4"
         style="height:64px;flex:none">
         <div class="d-flex align-items-center gap-2">
           <button class="btn btn-outline-primary menu-btn d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#sb"
