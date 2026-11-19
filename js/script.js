@@ -12,27 +12,116 @@ const ICN = [[/grinder/i, 'gear-wide-connected'], [/drill/i, 'lightning-charge']
 const ic = t => (ICN.find(r => r[0].test(t.name)) || [0, IC[t.cat] || 'tools'])[1];
 const meter = t => `<div class="mt-3"><div class="d-flex justify-content-between small mb-1"><span class="text-body-secondary"><i class="bi bi-box-seam me-1"></i>Available stock</span><b>${t.stock} ${t.stock === 1 ? 'unit' : 'units'}</b></div><div class="progress" style="height:6px" role="progressbar" aria-label="Stock level" aria-valuenow="${t.stock}" aria-valuemin="0" aria-valuemax="20"><div class="progress-bar bg-${stc[st(t)]}" style="width:${Math.min(100, Math.round(t.stock / 20 * 100))}%"></div></div></div>`;
 let nid = 7, delId = null, role = 'admin', page = 'dashboard';
-let tools = [{ id: 1, name: 'Angle Grinder', cat: 'Power Tools', rent: 200, stock: 18 }, { id: 2, name: 'Rotary Hammer Drill', cat: 'Power Tools', rent: 350, stock: 7 }, { id: 3, name: 'Claw Hammer', cat: 'Hand Tools', rent: 40, stock: 42 }, { id: 4, name: 'Adjustable Wrench', cat: 'Hand Tools', rent: 50, stock: 3 }, { id: 5, name: 'Safety Helmet', cat: 'Safety Equipment', rent: 30, stock: 0 }, { id: 6, name: 'Concrete Cutter', cat: 'Power Tools', rent: 800, stock: 5 }];
+let tools = [
+  { id: 1, name: 'Angle Grinder', cat: 'Power Tools', rent: 200, stock: 18, cond: 'Excellent', loc: 'Aisle A-1' },
+  { id: 2, name: 'Rotary Hammer Drill', cat: 'Power Tools', rent: 350, stock: 7, cond: 'Good', loc: 'Aisle A-3' },
+  { id: 3, name: 'Claw Hammer', cat: 'Hand Tools', rent: 40, stock: 42, cond: 'Good', loc: 'Bin B-04' },
+  { id: 4, name: 'Adjustable Wrench', cat: 'Hand Tools', rent: 50, stock: 3, cond: 'Fair', loc: 'Bin B-12' },
+  { id: 5, name: 'Safety Helmet', cat: 'Safety Equipment', rent: 30, stock: 0, cond: 'Good', loc: 'Rack C-2' },
+  { id: 6, name: 'Concrete Cutter', cat: 'Power Tools', rent: 800, stock: 5, cond: 'Excellent', loc: 'Bay D-1' }
+];
 const txns = [['Raja', 'Rotary Hammer Drill', '18 Nov 2026', '2 days', 700, 'Active'], ['Senthil', 'Concrete Cutter', '17 Nov 2026', '3 days', 2400, 'Returned'], ['Karthik', 'Angle Grinder', '16 Nov 2026', '1 day', 200, 'Active'], ['Muthu', 'Claw Hammer', '15 Nov 2026', '2 days', 80, 'Returned'], ['Vijay', 'Rotary Hammer Drill', '14 Nov 2026', '4 days', 1400, 'Overdue'], ['Siva', 'Concrete Cutter', '13 Nov 2026', '1 day', 800, 'Returned']];
 const st = t => t.stock === 0 ? 'Out of Stock' : t.stock <= 5 ? 'Low Stock' : 'In Stock', stc = { 'In Stock': 'success', 'Low Stock': 'warning', 'Out of Stock': 'danger' }, tc = { Active: 'primary', Overdue: 'danger', Returned: 'success' };
 const BI = { 'In Stock': 'check-circle', 'Low Stock': 'exclamation-triangle', 'Out of Stock': 'x-circle', Active: 'clock-history', Overdue: 'exclamation-circle', Returned: 'check-circle' };
 const badge = (l, c) => `<span class="badge rounded-pill text-bg-${c}"><i class="bi bi-${BI[l]} me-1"></i>${l}</span>`;
 const stat = (l, v, ic, n, cls = 'text-body-secondary') => `<div class="col-6 col-xl-3"><div class="card h-100"><div class="card-body"><div class="d-flex justify-content-between small text-body-secondary">${l}<span class="ico"><i class="bi bi-${ic}"></i></span></div><div class="fs-3 fw-bold">${v}</div><div class="small ${cls}">${n}</div></div></div></div>`;
-const titles = { dashboard: ['Dashboard overview', 'Monitor your tool shop performance and stock.'], inventory: ['Inventory management', 'Manage tool details, rent and available stock.'], transactions: ['Rental transactions', 'Track bookings, rental periods and returns.'], catalog: ['Tool catalog', 'Preview how your tools appear to customers.'], user: ['Available tools', 'Explore tools available for rent at our shop.'] };
+const titles = { dashboard: ['Dashboard overview', 'Monitor your tool shop performance and stock.'], inventory: ['Inventory management', 'Manage tool details, rent and available stock.'], transactions: ['Rental transactions', 'Track bookings, rental periods and returns.'], catalog: ['Tool catalog', 'Preview how your tools appear to customers.'], user: ['Available Tools', 'View and manage tools that are currently available for use.'] };
 function toast(m) { $('#toastB').textContent = m; bootstrap.Toast.getOrCreateInstance($('#toast'), { delay: 2600 }).show() }
+
+// ── renderUserView: renders Available Tools table & grid views ──────────
+function renderUserView(q, c, cond, sf) {
+  const list = tools.filter(t => {
+    const matchesQ = !q || (t.name + t.cat).toLowerCase().includes(q);
+    const matchesC = !c || t.cat === c;
+    const matchesCond = !cond || (t.cond || 'Good') === cond;
+    const matchesS = !sf || st(t) === sf;
+    return matchesQ && matchesC && matchesCond && matchesS;
+  });
+
+  const hasFilters = Boolean(q || c || cond || sf);
+
+  // 1. Table (List) View
+  const tableEl = $('#userTable');
+  if (tableEl) {
+    if (!list.length) {
+      tableEl.innerHTML = `<tr><td colspan="6" class="text-center py-5">
+        <div class="user-empty-state border-0 py-3">
+          <i class="bi bi-search fs-1 text-body-secondary opacity-50 mb-2"></i>
+          <div class="fw-semibold mb-1">No tools found</div>
+          <div class="small text-body-secondary mb-3">${hasFilters ? 'No tools match your search criteria.' : 'No available tools listed.'}</div>
+          ${hasFilters ? `<button class="btn btn-outline-primary btn-sm" onclick="document.getElementById('uClear').click()"><i class="bi bi-x-circle me-1"></i>Clear filters</button>` : ''}
+        </div>
+      </td></tr>`;
+    } else {
+      tableEl.innerHTML = list.map(t => {
+        const s = st(t), inStock = t.stock > 0;
+        const condClass = t.cond === 'Excellent' ? 'text-bg-success' : t.cond === 'Good' ? 'text-bg-primary' : 'text-bg-warning';
+        return `<tr>
+          <td>
+            <span class="ico d-inline-grid me-2 align-middle"><i class="bi bi-${ic(t)}"></i></span>
+            <b>${esc(t.name)}</b>
+          </td>
+          <td>${esc(t.cat)}</td>
+          <td><span class="badge ${condClass}">${esc(t.cond || 'Good')}</span></td>
+          <td><span class="text-body-secondary"><i class="bi bi-geo-alt text-primary me-1"></i>${esc(t.loc || 'Main Storage')}</span></td>
+          <td>${badge(s, stc[s])}</td>
+          <td class="text-end text-nowrap">
+            ${inStock ? `<button class="btn btn-sm btn-primary me-1" data-enq="${t.id}" title="Enquire about ${esc(t.name)}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : `<button class="btn btn-sm btn-secondary me-1" disabled title="Currently out of stock"><i class="bi bi-slash-circle me-1"></i>Unavailable</button>`}
+            <button class="btn btn-sm btn-outline-secondary" data-det="${t.id}" title="View details of ${esc(t.name)}"><i class="bi bi-info-circle me-1"></i>Details</button>
+          </td>
+        </tr>`;
+      }).join('');
+    }
+  }
+
+  // 2. Grid View
+  const gridEl = $('#userGrid');
+  if (gridEl) {
+    if (!list.length) {
+      gridEl.innerHTML = `<div class="user-grid-empty" style="grid-column: 1 / -1">
+        <div class="user-empty-state border-0 py-3">
+          <i class="bi bi-search fs-1 text-body-secondary opacity-50 mb-2"></i>
+          <div class="fw-semibold mb-1">No tools found</div>
+          <div class="small text-body-secondary mb-3">${hasFilters ? 'No tools match your search criteria.' : 'No available tools listed.'}</div>
+          ${hasFilters ? `<button class="btn btn-outline-primary btn-sm" onclick="document.getElementById('uClear').click()"><i class="bi bi-x-circle me-1"></i>Clear filters</button>` : ''}
+        </div>
+      </div>`;
+    } else {
+      gridEl.innerHTML = list.map(t => {
+        const s = st(t), inStock = t.stock > 0;
+        const condClass = t.cond === 'Excellent' ? 'text-bg-success' : t.cond === 'Good' ? 'text-bg-primary' : 'text-bg-warning';
+        return `<div class="card h-100 lift inv-card user-tool-card">
+        <div class="card-body d-flex flex-column gap-2">
+          <div class="tool-vis"><i class="bi bi-${ic(t)}"></i></div>
+          <div class="inv-card-name">${esc(t.name)}</div>
+          <div class="inv-card-meta">${esc(t.cat)}</div>
+          <div class="user-card-details">
+            <div class="user-card-detail-row">
+              <span class="user-card-label"><i class="bi bi-heart-pulse me-1"></i>Condition</span>
+              <span class="badge ${condClass} user-card-badge">${esc(t.cond || 'Good')}</span>
+            </div>
+            <div class="user-card-detail-row">
+              <span class="user-card-label"><i class="bi bi-geo-alt text-primary me-1"></i>Location</span>
+              <span class="user-card-loc">${esc(t.loc || 'Main Storage')}</span>
+            </div>
+          </div>
+          <div class="mt-auto">
+            ${badge(s, stc[s])}
+          </div>
+          <div class="inv-card-actions">
+            ${inStock ? `<button class="btn btn-primary btn-sm flex-fill" data-enq="${t.id}" title="Enquire about ${esc(t.name)}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : `<button class="btn btn-secondary btn-sm flex-fill" disabled title="Currently out of stock"><i class="bi bi-slash-circle me-1"></i>Unavailable</button>`}
+            <button class="btn btn-outline-secondary btn-sm" data-det="${t.id}" title="View details of ${esc(t.name)}"><i class="bi bi-info-circle"></i></button>
+          </div>
+        </div>
+      </div>`;
+      }).join('');
+    }
+  }
+}
+
+// Backwards compatibility for any legacy callers
 function cards(el, q, c) {
-  const container = $(el);
-  const isListView = container.classList.contains('cat-list-view');
-  const l = tools.filter(t => (t.name + t.cat).toLowerCase().includes(q.toLowerCase()) && (!c || t.cat === c));
-  if (!l.length) {
-    container.innerHTML = '<div class="col-12 text-center text-body-secondary py-5">No tools found</div>';
-    return;
-  }
-  if (isListView) {
-    container.innerHTML = l.map(t => `<div class="col-12"><div class="card h-100 lift"><div class="card-body d-flex flex-row align-items-center gap-3"><div class="tool-vis" style="width:64px;height:64px;font-size:1.7rem;flex:none;margin:0"><i class="bi bi-${ic(t)}"></i></div><div class="cat-card-body flex-grow-1"><div class="cat-card-info"><div class="fw-semibold">${esc(t.name)}</div><div class="small text-body-secondary">${esc(t.cat)} · ${money(t.rent)}/day</div></div><div class="cat-card-actions d-flex gap-2 align-items-center">${badge(st(t), stc[st(t)])}${t.stock ? `<button class="btn btn-primary btn-sm" data-enq="${t.id}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}<button class="btn btn-sm btn-outline-secondary" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button></div></div></div></div></div>`).join('');
-  } else {
-    container.innerHTML = l.map(t => `<div class="col-12 col-sm-6 col-xl-4"><div class="card h-100 lift"><div class="card-body d-flex flex-column"><div class="tool-vis mb-3"><i class="bi bi-${ic(t)}"></i></div><div class="fw-semibold mb-1">${esc(t.name)}</div><div class="small text-body-secondary mb-2">${esc(t.cat)}</div><div class="mt-auto d-flex align-items-center justify-content-between"><span class="fw-semibold">${money(t.rent)}<span class="text-body-secondary fw-normal small"> / day</span></span>${badge(st(t), stc[st(t)])}</div>${t.stock ? `<button class="btn btn-primary btn-sm w-100 mt-3" data-enq="${t.id}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}<button class="btn btn-sm btn-outline-secondary w-100 mt-2" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button></div></div></div>`).join('');
-  }
+  renderUserView(q, c, '', '');
 }
 function render() {
   const act = txns.filter(t => t[5] !== 'Returned'), rev = txns.reduce((a, t) => a + t[4], 0), units = tools.reduce((a, t) => a + t.stock, 0), low = tools.filter(t => t.stock > 0 && t.stock <= 5).length, out = tools.filter(t => !t.stock).length;
@@ -53,7 +142,26 @@ function render() {
   const cq = $('#cQ').value.toLowerCase(), cc = $('#cC').value;
   renderCatGrid(cq, cc);
   $('#catTable').innerHTML = tools.filter(t => (t.name + t.cat).toLowerCase().includes(cq) && (!cc || t.cat === cc)).map(t => `<tr><td><span class="ico d-inline-grid me-2 align-middle"><i class="bi bi-${ic(t)}"></i></span><b>${esc(t.name)}</b> <small class="text-body-secondary">#TLS-${String(t.id).padStart(3, '0')}</small></td><td>${esc(t.cat)}</td><td><b>${money(t.rent)}</b></td><td><div class="d-flex align-items-center gap-2"><b class="text-center" style="min-width:2.2ch">${t.stock}</b><span class="small text-body-secondary">${t.stock === 1 ? 'unit' : 'units'}</span></div><div class="progress mt-2" style="height:4px;width:104px"><div class="progress-bar bg-${stc[st(t)]}" style="width:${Math.min(100, Math.round(t.stock / 20 * 100))}%"></div></div></td><td>${badge(st(t), stc[st(t)])}</td><td class="text-end text-nowrap">${t.stock ? `<button class="btn btn-sm btn-primary me-1" data-enq="${t.id}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}<button class="btn btn-sm btn-outline-secondary" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center text-body-secondary py-4">No tools found.</td></tr>';
-  cards('#uCat', $('#uQ').value, $('#uC').value);
+  // Available Tools summary statistics
+  const uAvail = tools.filter(t => t.stock > 0).length;
+  const uCats = new Set(tools.map(t => t.cat)).size;
+  const uReadyUnits = tools.reduce((a, t) => a + t.stock, 0);
+  const uReturned = txns.filter(t => t[5] === 'Returned').length;
+  const uStatsEl = $('#uStats');
+  if (uStatsEl) {
+    uStatsEl.innerHTML =
+      stat('Total Available Tools', uAvail, 'tools', `${uAvail} of ${tools.length} available`, 'text-success-emphasis') +
+      stat('Total Tool Categories', uCats, 'grid', 'Power, hand & safety', 'text-body-secondary') +
+      stat('Ready for Checkout', uReadyUnits, 'box-seam', 'Available stock units', 'text-primary-emphasis') +
+      stat('Recently Returned', uReturned, 'arrow-return-left', 'Restocked & ready', 'text-success');
+  }
+
+  // Available Tools table and grid
+  const uq = $('#uQ') ? $('#uQ').value.trim().toLowerCase() : '';
+  const uc = $('#uC') ? $('#uC').value : '';
+  const ucond = $('#uCond') ? $('#uCond').value : '';
+  const us = $('#uS') ? $('#uS').value : '';
+  renderUserView(uq, uc, ucond, us);
 }
 function show(p) {
   page = p; document.querySelectorAll('.pg').forEach(e => e.classList.toggle('d-none', e.id !== 'p-' + p)); document.querySelectorAll('#nav .nav-link').forEach(b => b.classList.toggle('active', b.dataset.page === p));
@@ -67,7 +175,29 @@ document.addEventListener('click', e => {
   else if (b = g('[data-role]')) setRole(b.dataset.role);
   else if (b = g('[data-toast]')) { e.preventDefault(); toast(b.dataset.toast) }
   else if (b = g('[data-enq]')) toast('Enquiry noted for ' + tools.find(t => t.id == b.dataset.enq).name + '. The shop will contact you.');
-  else if (b = g('[data-det]')) { const t = tools.find(t => t.id == b.dataset.det), s = st(t), r = (i, l, v) => `<li class="list-group-item d-flex justify-content-between align-items-center px-0"><span class="text-body-secondary"><i class="bi bi-${i} me-2"></i>${l}</span><b>${v}</b></li>`; $('#detB').innerHTML = `<div class="text-center mb-3"><div class="tool-vis mx-auto mb-3" style="width:110px"><i class="bi bi-${ic(t)}"></i></div><h3 class="h5 fw-bold mb-2">${esc(t.name)}</h3>${badge(s, stc[s])}</div><ul class="list-group list-group-flush">${r('hash', 'Tool ID', '#TLS-' + String(t.id).padStart(3, '0'))}${r('tag', 'Category', esc(t.cat))}${r('currency-rupee', 'Rent per day', money(t.rent))}</ul>${meter(t)}`; $('#detEnq').dataset.enq = t.id; $('#detEnq').classList.toggle('d-none', !t.stock); bootstrap.Modal.getOrCreateInstance($('#detModal')).show() }
+  else if (b = g('[data-det]')) {
+    const t = tools.find(t => t.id == b.dataset.det), s = st(t), r = (i, l, v) => `<li class="list-group-item d-flex justify-content-between align-items-center px-0"><span class="text-body-secondary"><i class="bi bi-${i} me-2"></i>${l}</span><b>${v}</b></li>`;
+    const condClass = t.cond === 'Excellent' ? 'text-bg-success' : t.cond === 'Good' ? 'text-bg-primary' : 'text-bg-warning';
+    $('#detB').innerHTML = `<div class="text-center mb-3">
+      <div class="tool-vis mx-auto mb-3" style="width:110px"><i class="bi bi-${ic(t)}"></i></div>
+      <h3 class="h5 fw-bold mb-1">${esc(t.name)}</h3>
+      <div class="d-flex justify-content-center gap-2 mb-2">
+        ${badge(s, stc[s])}
+        <span class="badge ${condClass}">${esc(t.cond || 'Good')}</span>
+      </div>
+    </div>
+    <ul class="list-group list-group-flush">
+      ${r('hash', 'Tool ID', '#TLS-' + String(t.id).padStart(3, '0'))}
+      ${r('tag', 'Category', esc(t.cat))}
+      ${r('heart-pulse', 'Condition', esc(t.cond || 'Good'))}
+      ${r('geo-alt', 'Storage Location', esc(t.loc || 'Main Storage'))}
+      ${r('currency-rupee', 'Rent per day', money(t.rent))}
+    </ul>
+    ${meter(t)}`;
+    $('#detEnq').dataset.enq = t.id;
+    $('#detEnq').classList.toggle('d-none', !t.stock);
+    bootstrap.Modal.getOrCreateInstance($('#detModal')).show();
+  }
   else if (b = g('[data-adj]')) { const [d, i] = b.dataset.adj.split(':'), t = tools.find(t => t.id == i); t.stock = Math.max(0, t.stock + Number(d)); render() }
   else if (b = g('[data-restock]')) { const t = tools.find(t => t.id == b.dataset.restock); t.stock += 5; render(); toast(t.name + ' restocked (+5).') }
   else if (b = g('[data-del]')) { const t = tools.find(t => t.id == b.dataset.del); delId = t.id; $('#delTxt').textContent = '“' + t.name + '” will be removed from inventory.'; bootstrap.Modal.getOrCreateInstance($('#delModal')).show() }
@@ -76,9 +206,22 @@ $('#delOk').onclick = () => { tools = tools.filter(t => t.id !== delId); bootstr
 $('#addBtn').onclick = () => bootstrap.Modal.getOrCreateInstance($('#toolModal')).show();
 $('#toolForm').addEventListener('submit', e => {
   e.preventDefault(); const f = e.target; f.classList.add('was-validated'); if (!f.checkValidity()) return;
-  tools.push({ id: nid++, name: $('#fN').value.trim(), cat: $('#fC').value, rent: +$('#fR').value, stock: +$('#fS').value }); f.reset(); f.classList.remove('was-validated'); bootstrap.Modal.getInstance($('#toolModal')).hide(); render(); toast('Tool added to inventory.')
+  tools.push({ id: nid++, name: $('#fN').value.trim(), cat: $('#fC').value, rent: +$('#fR').value, stock: +$('#fS').value, cond: 'Good', loc: 'Main Storage' }); f.reset(); f.classList.remove('was-validated'); bootstrap.Modal.getInstance($('#toolModal')).hide(); render(); toast('Tool added to inventory.')
 });
-['#iQ', '#iF', '#tQ', '#tF', '#cQ', '#cC', '#uQ', '#uC'].forEach(s => $(s).addEventListener('input', render));
+['#iQ', '#iF', '#tQ', '#tF', '#cQ', '#cC', '#uQ', '#uC', '#uCond', '#uS'].forEach(s => {
+  const el = $(s);
+  if (el) el.addEventListener('input', render);
+});
+const uClear = $('#uClear');
+if (uClear) {
+  uClear.onclick = () => {
+    if ($('#uQ')) $('#uQ').value = '';
+    if ($('#uC')) $('#uC').value = '';
+    if ($('#uCond')) $('#uCond').value = '';
+    if ($('#uS')) $('#uS').value = '';
+    render();
+  };
+}
 $('#cC').innerHTML = $('#uC').innerHTML = '<option value="">All categories</option>' + CATS.map(c => `<option>${c}</option>`).join(''); $('#fC').innerHTML = CATS.map(c => `<option>${c}</option>`).join('');
 $('#bars').innerHTML = [['Mon', 40], ['Tue', 58], ['Wed', 48], ['Thu', 76], ['Fri', 62], ['Sat', 88], ['Sun', 53]].map(d => `<div><i style="height:${d[1]}%"></i>${d[0]}</div>`).join('');
 
@@ -187,7 +330,7 @@ document.addEventListener('click', e => {
   btn.closest('.btn-group').querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
 
-  if (targetId === 'inv-view' || targetId === 'cat-view' || targetId === 'txn-view') {
+  if (targetId === 'inv-view' || targetId === 'cat-view' || targetId === 'txn-view' || targetId === 'user-view') {
     const parent = $('#' + targetId);
     if (!parent) return;
     const listWrap = parent.querySelector('.inv-list-wrap');

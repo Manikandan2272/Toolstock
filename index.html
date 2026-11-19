@@ -35,9 +35,9 @@
           <button class="nav-link border-0 bg-transparent usr d-none" data-page="user"><i
               class="bi bi-grid"></i>Available Tools</button>
         </nav>
-        <div class="sidebar-footer mt-auto px-2 pt-3 border-top border-secondary-subtle">
+        <div class="sidebar-footer px-2">
           <div class="sidebar-footer-title">Tool Shop Management</div>
-          <div class="sidebar-footer-subtitle">Demo Prototype · v4</div>
+          <div class="sidebar-footer-subtitle">Demo Prototype</div>
         </div>
       </div>
     </aside>
@@ -255,28 +255,62 @@
           </section>
 
           <section class="pg d-none" id="p-user">
-            <div class="card bg-primary-subtle border-0 mb-4">
-              <div class="card-body d-flex justify-content-between align-items-center">
-                <div>
-                  <h2 class="h5 fw-bold text-primary-emphasis">Find the right tool for your work</h2>
-                  <p class="mb-0">Browse tools and check daily rental rates. No login required.</p>
-                </div><i class="bi bi-tools display-4 text-primary d-none d-sm-block"></i>
-              </div>
-            </div>
+            <div class="row g-3 mb-3" id="uStats"></div>
             <div class="row g-2 mb-3 align-items-center">
-              <div class="col-12 col-md"><input class="form-control" id="uQ" placeholder="Search tools"
-                  aria-label="Search tools"></div>
-              <div class="col-12 col-md-auto d-flex gap-2">
-                <select class="form-select cat-sel" id="uC" aria-label="Category"></select>
+              <div class="col-12 col-md">
+                <div class="input-group">
+                  <span class="input-group-text"><i class="bi bi-search"></i></span>
+                  <input class="form-control" id="uQ" placeholder="Search tools by name..."
+                    aria-label="Search tools by name">
+                </div>
+              </div>
+              <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
+                <select class="form-select cat-sel" id="uC" aria-label="Category"
+                  style="min-width:140px;width:auto;"></select>
+                <select class="form-select" id="uCond" aria-label="Condition" style="min-width:130px;width:auto;">
+                  <option value="">All conditions</option>
+                  <option value="Excellent">Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+                </select>
+                <select class="form-select" id="uS" aria-label="Status filter" style="min-width:130px;width:auto;">
+                  <option value="">All statuses</option>
+                  <option value="In Stock">In Stock</option>
+                  <option value="Low Stock">Low Stock</option>
+                  <option value="Out of Stock">Out of Stock</option>
+                </select>
+                <button type="button" class="btn btn-outline-secondary" id="uClear" title="Clear filters"
+                  aria-label="Clear filters">
+                  <i class="bi bi-x-circle me-1"></i>Clear
+                </button>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="userViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list" data-target="uCat"
-                    aria-label="List view"><i class="bi bi-list-ul"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list"
+                    data-target="user-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
                   <button type="button" class="btn btn-outline-primary view-btn active" data-view="grid"
-                    data-target="uCat" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                    data-target="user-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
                 </div>
               </div>
             </div>
-            <div class="row g-3" id="uCat"></div>
+            <div id="user-view">
+              <div class="card inv-list-wrap d-none">
+                <div class="table-responsive">
+                  <table class="table table-hover align-middle mb-0">
+                    <thead>
+                      <tr>
+                        <th>Tool Name</th>
+                        <th>Category</th>
+                        <th>Condition</th>
+                        <th>Location</th>
+                        <th>Availability Status</th>
+                        <th class="text-end">Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="userTable"></tbody>
+                  </table>
+                </div>
+              </div>
+              <div class="inv-grid-wrap" id="userGrid"></div>
+            </div>
           </section>
         </div>
 

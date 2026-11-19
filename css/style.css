@@ -22630,6 +22630,7 @@ header.bg-body {
 .foot-copy {
   text-align: center;
   font-size: .7rem;
+  font-weight: bold;
   color: #9ECAE1;
   padding: .1rem 1rem .5rem
 }
@@ -22895,13 +22896,25 @@ header.bg-body {
   width: auto !important;
   height: auto !important;
   min-width: 0 !important;
-  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   color: var(--bs-body-color) !important;
   cursor: pointer;
   line-height: 1 !important;
   transition: color .15s ease;
+}
+
+/* Show hamburger only on mobile; d-lg-none hides it on ≥992px */
+@media (max-width: 991.98px) {
+  .menu-btn {
+    display: inline-flex !important;
+  }
+}
+
+@media (min-width: 992px) {
+  .menu-btn {
+    display: none !important;
+  }
 }
 
 .menu-btn:hover,
@@ -22955,6 +22968,8 @@ header.bg-body {
   #p-inventory .inv-list-wrap,
   #p-catalog .inv-list-wrap,
   #p-transactions .inv-list-wrap,
+  #p-user .inv-list-wrap,
+  #p-user>.card,
   #p-transactions>.card {
     background: transparent;
     border: 0;
@@ -23009,8 +23024,17 @@ header.bg-body {
   }
 
   #inv td:nth-child(2)::before,
-  #catTable td:nth-child(2)::before {
+  #catTable td:nth-child(2)::before,
+  #userTable td:nth-child(2)::before {
     content: "Category"
+  }
+
+  #userTable td:nth-child(3)::before {
+    content: "Condition"
+  }
+
+  #userTable td:nth-child(4)::before {
+    content: "Location"
   }
 
   #inv td:nth-child(3)::before,
@@ -23024,8 +23048,9 @@ header.bg-body {
   }
 
   #inv td:nth-child(5)::before,
-  #catTable td:nth-child(5)::before {
-    content: "Status"
+  #catTable td:nth-child(5)::before,
+  #userTable td:nth-child(5)::before {
+    content: "Availability Status"
   }
 
   #txn td:nth-child(1)::before {
@@ -23066,6 +23091,7 @@ header.bg-body {
 
   #inv td:nth-child(1),
   #catTable td:nth-child(1),
+  #userTable td:nth-child(1),
   #alerts td:nth-child(1) {
     text-align: left;
     justify-content: flex-start;
@@ -23088,7 +23114,8 @@ header.bg-body {
   }
 
   #inv td:nth-child(6),
-  #catTable td:nth-child(6) {
+  #catTable td:nth-child(6),
+  #userTable td:nth-child(6) {
     justify-content: flex-end;
     border-top: 1px solid #eef2fb;
     margin-top: .3rem;
@@ -23136,7 +23163,7 @@ header.bg-body {
   border-radius: 0 .5rem .5rem 0;
 }
 
-/* ── Inventory, Catalog & Transactions: Grid view ── */
+/* ── Inventory, Catalog, Transactions & Available Tools: Grid view ── */
 #invGrid,
 #catGrid,
 #txnGrid,
@@ -23148,6 +23175,7 @@ header.bg-body {
 }
 
 @media (max-width: 991.98px) {
+
   #invGrid,
   #catGrid,
   #txnGrid,
@@ -23158,6 +23186,7 @@ header.bg-body {
 }
 
 @media (max-width: 767.98px) {
+
   #invGrid,
   #catGrid,
   #txnGrid,
@@ -23284,6 +23313,7 @@ header.bg-body {
 
 /* ── Mobile scrollbar hiding ── */
 @media (max-width: 768px) {
+
   /* Hide webkit scrollbar on mobile */
   ::-webkit-scrollbar {
     width: 0 !important;
@@ -23299,5 +23329,186 @@ header.bg-body {
   /* Ensure scrolling still works (scroll via touch) */
   #scroller {
     -webkit-overflow-scrolling: touch;
+  }
+}
+
+
+/* ── Available Tools (User Catalog) Improvements ── */
+
+/* Empty / no-results state */
+.user-empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 3rem 1.5rem;
+  border: 2px dashed var(--bs-border-color);
+  border-radius: 1rem;
+  margin: .5rem 0;
+  background: rgba(255, 255, 255, .5);
+}
+
+/* Sidebar footer: clean spacing */
+.sidebar-footer {
+  padding-top: .75rem;
+  padding-bottom: .5rem;
+}
+
+/* List view table styling */
+#userTable td {
+  vertical-align: middle;
+}
+
+/* ── Available Tools Grid View: 6-col desktop responsive layout ── */
+#userGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+/* Laptop: 4 columns (~1200px and below) */
+@media (max-width: 1399.98px) {
+  #userGrid {
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+/* Tablet: 3 columns (~992px and below) */
+@media (max-width: 991.98px) {
+  #userGrid {
+    grid-template-columns: repeat(3, 1fr);
+    gap: .85rem;
+  }
+}
+
+/* Mobile: 2 columns (~576px and below) */
+@media (max-width: 575.98px) {
+  #userGrid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: .65rem;
+  }
+}
+
+/* Small mobile: 1 column (~380px and below) */
+@media (max-width: 379.98px) {
+  #userGrid {
+    grid-template-columns: 1fr;
+    gap: .65rem;
+  }
+}
+
+/* ── User Tool Card Styles ── */
+.user-tool-card {
+  min-width: 0;
+  transition: box-shadow .18s ease, transform .18s ease;
+}
+
+.user-tool-card:hover {
+  box-shadow: 0 8px 28px rgba(27, 58, 158, .14);
+  transform: translateY(-2px);
+}
+
+.user-tool-card .card-body {
+  padding: .85rem;
+}
+
+.user-tool-card .tool-vis {
+  height: 80px;
+  font-size: 2rem;
+  border-radius: .75rem;
+  margin-bottom: .2rem;
+}
+
+.user-tool-card .inv-card-name {
+  font-weight: 700;
+  font-size: .9rem;
+  line-height: 1.25;
+  color: var(--bs-body-color);
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.user-tool-card .inv-card-meta {
+  font-size: .75rem;
+  color: var(--bs-secondary-color);
+}
+
+/* Detail rows inside user card */
+.user-card-details {
+  display: flex;
+  flex-direction: column;
+  gap: .3rem;
+  margin-top: .15rem;
+}
+
+.user-card-detail-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .4rem;
+  flex-wrap: wrap;
+}
+
+.user-card-label {
+  font-size: .72rem;
+  color: var(--bs-secondary-color);
+  white-space: nowrap;
+}
+
+.user-card-loc {
+  font-size: .72rem;
+  font-weight: 600;
+  color: var(--bs-body-color);
+  text-align: right;
+  word-break: break-word;
+}
+
+.user-card-badge {
+  font-size: .65rem;
+  padding: .2em .5em;
+}
+
+/* Actions row at the bottom */
+.user-tool-card .inv-card-actions {
+  margin-top: .35rem;
+  display: flex;
+  gap: .35rem;
+  align-items: center;
+  padding-top: .45rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.user-tool-card .inv-card-actions .btn {
+  font-size: .8rem;
+  padding: .3rem .55rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+}
+
+/* On very small cards (many columns), shrink text a bit */
+@media (max-width: 1199.98px) {
+  .user-tool-card .inv-card-name {
+    font-size: .82rem;
+  }
+
+  .user-tool-card .inv-card-actions .btn {
+    font-size: .74rem;
+    padding: .25rem .4rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .user-tool-card .tool-vis {
+    height: 68px;
+    font-size: 1.75rem;
+  }
+
+  .user-tool-card .inv-card-name {
+    font-size: .82rem;
   }
 }
