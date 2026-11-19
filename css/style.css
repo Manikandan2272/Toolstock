@@ -22709,7 +22709,17 @@ body {
   --bs-offcanvas-bg: #fff;
   --bs-offcanvas-color: #14213d;
   color: #14213d;
-  border-right: 1px solid #e3e9f8
+  border-right: 1px solid #e3e9f8;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sb .offcanvas-body {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  height: 100%;
 }
 
 .sb .nav-link {
@@ -22732,7 +22742,7 @@ body {
 }
 
 .sidebar-footer {
-  margin-top: auto;
+  margin-top: auto !important;
   border-top: 1px solid #e3e9f8;
   padding-top: 0.85rem;
   display: flex;
