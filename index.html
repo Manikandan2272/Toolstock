@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
   <title>ToolStock</title>
   <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="icon" href="assets/icons/favicon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="css/style.css">
   <script>document.documentElement.dataset.bsTheme = 'light'</script>
 </head>
@@ -41,7 +42,8 @@
       </div>
     </aside>
     <main class="flex-grow-1 d-flex flex-column app-main">
-      <header class="sticky-top bg-body border-bottom d-flex align-items-center justify-content-between px-3 px-lg-4 app-header">
+      <header
+        class="sticky-top bg-body border-bottom d-flex align-items-center justify-content-between px-3 px-lg-4 app-header">
         <div class="d-flex align-items-center gap-2">
           <button class="btn menu-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sb"
             aria-label="Open menu"><i class="bi bi-list"></i></button>
@@ -139,8 +141,10 @@
                   <option>Out of Stock</option>
                 </select>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="invViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list" data-target="inv-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="inv-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list"
+                    data-target="inv-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="inv-view"
+                    aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
                 </div>
               </div>
             </div>
@@ -182,8 +186,10 @@
                   <option>Returned</option>
                 </select>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="txnViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list" data-target="txn-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="txn-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list"
+                    data-target="txn-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="txn-view"
+                    aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
                 </div>
               </div>
             </div>
@@ -219,8 +225,10 @@
               <div class="col-12 col-md-auto d-flex gap-2">
                 <select class="form-select cat-sel" id="cC" aria-label="Category"></select>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="catViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list" data-target="cat-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="cat-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list"
+                    data-target="cat-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="cat-view"
+                    aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
                 </div>
               </div>
             </div>
@@ -261,8 +269,10 @@
               <div class="col-12 col-md-auto d-flex gap-2">
                 <select class="form-select cat-sel" id="uC" aria-label="Category"></select>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="userViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list" data-target="uCat" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="grid" data-target="uCat" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list" data-target="uCat"
+                    aria-label="List view"><i class="bi bi-list-ul"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="grid"
+                    data-target="uCat" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
                 </div>
               </div>
             </div>
