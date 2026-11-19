@@ -21,8 +21,18 @@ const stat = (l, v, ic, n, cls = 'text-body-secondary') => `<div class="col-6 co
 const titles = { dashboard: ['Dashboard overview', 'Monitor your tool shop performance and stock.'], inventory: ['Inventory management', 'Manage tool details, rent and available stock.'], transactions: ['Rental transactions', 'Track bookings, rental periods and returns.'], catalog: ['Tool catalog', 'Preview how your tools appear to customers.'], user: ['Available tools', 'Explore tools available for rent at our shop.'] };
 function toast(m) { $('#toastB').textContent = m; bootstrap.Toast.getOrCreateInstance($('#toast'), { delay: 2600 }).show() }
 function cards(el, q, c) {
+  const container = $(el);
+  const isListView = container.classList.contains('cat-list-view');
   const l = tools.filter(t => (t.name + t.cat).toLowerCase().includes(q.toLowerCase()) && (!c || t.cat === c));
-  $(el).innerHTML = l.map(t => `<div class="col-12 col-sm-6 col-xl-4"><div class="card h-100 lift"><div class="card-body d-flex flex-column"><div class="tool-vis mb-3"><i class="bi bi-${ic(t)}"></i></div><h3 class="h6 fw-bold mb-1">${esc(t.name)}</h3><div class="small text-body-secondary"><i class="bi bi-${IC[t.cat] || 'tag'} me-1"></i>${esc(t.cat)}</div><div class="d-flex justify-content-between align-items-center mt-3"><span class="fs-5 fw-bold">${money(t.rent)}<small class="fs-6 fw-normal text-body-secondary"> / day</small></span>${badge(st(t), stc[st(t)])}</div>${meter(t)}<div class="d-flex gap-2 mt-3"><button class="btn btn-outline-primary btn-sm flex-fill" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button><button class="btn btn-primary btn-sm flex-fill" data-enq="${t.id}" ${t.stock ? '' : 'disabled'}><i class="bi bi-chat-dots me-1"></i>Enquire</button></div></div></div></div>`).join('') || '<div class="col-12 text-center text-body-secondary py-5"><i class="bi bi-search fs-2 d-block"></i>No tools match your search.</div>'
+  if (!l.length) {
+    container.innerHTML = '<div class="col-12 text-center text-body-secondary py-5">No tools found</div>';
+    return;
+  }
+  if (isListView) {
+    container.innerHTML = l.map(t => `<div class="col-12"><div class="card h-100 lift"><div class="card-body d-flex flex-row align-items-center gap-3"><div class="tool-vis" style="width:64px;height:64px;font-size:1.7rem;flex:none;margin:0"><i class="bi bi-${ic(t)}"></i></div><div class="cat-card-body flex-grow-1"><div class="cat-card-info"><div class="fw-semibold">${esc(t.name)}</div><div class="small text-body-secondary">${esc(t.cat)} · ${money(t.rent)}/day</div></div><div class="cat-card-actions d-flex gap-2 align-items-center">${badge(st(t), stc[st(t)])}${t.stock ? `<button class="btn btn-primary btn-sm" data-enq="${t.id}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}<button class="btn btn-sm btn-outline-secondary" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button></div></div></div></div></div>`).join('');
+  } else {
+    container.innerHTML = l.map(t => `<div class="col-12 col-sm-6 col-xl-4"><div class="card h-100 lift"><div class="card-body d-flex flex-column"><div class="tool-vis mb-3"><i class="bi bi-${ic(t)}"></i></div><div class="fw-semibold mb-1">${esc(t.name)}</div><div class="small text-body-secondary mb-2">${esc(t.cat)}</div><div class="mt-auto d-flex align-items-center justify-content-between"><span class="fw-semibold">${money(t.rent)}<span class="text-body-secondary fw-normal small"> / day</span></span>${badge(st(t), stc[st(t)])}</div>${t.stock ? `<button class="btn btn-primary btn-sm w-100 mt-3" data-enq="${t.id}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}<button class="btn btn-sm btn-outline-secondary w-100 mt-2" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button></div></div></div>`).join('');
+  }
 }
 function render() {
   const act = txns.filter(t => t[5] !== 'Returned'), rev = txns.reduce((a, t) => a + t[4], 0), units = tools.reduce((a, t) => a + t.stock, 0), low = tools.filter(t => t.stock > 0 && t.stock <= 5).length, out = tools.filter(t => !t.stock).length;
@@ -32,10 +42,18 @@ function render() {
   $('#alerts').innerHTML = tools.filter(t => t.stock <= 5).map(t => `<tr><td><i class="bi bi-${ic(t)} text-primary me-2"></i>${esc(t.name)}</td><td>${esc(t.cat)}</td><td>${t.stock}</td><td>${badge(st(t), stc[st(t)])}</td></tr>`).join('') || '<tr><td colspan="4" class="text-center text-body-secondary py-3">All stock levels are healthy.</td></tr>';
   $('#act').innerHTML = txns.slice(0, 4).map(t => `<div class="d-flex align-items-center gap-3"><span class="ico"><i class="bi bi-${t[5] === 'Returned' ? 'arrow-return-left' : 'cart-check'}"></i></span><div class="flex-grow-1 small"><b class="d-block">${esc(t[1])} ${t[5] === 'Returned' ? 'returned' : 'rented'}</b><span class="text-body-secondary">${esc(t[0])} · ${t[2]}</span></div><b class="small">${money(t[4])}</b></div>`).join('');
   const q = $('#iQ').value.toLowerCase(), f = $('#iF').value;
+  renderInvGrid(q, f);
   $('#inv').innerHTML = tools.filter(t => (t.name + t.cat).toLowerCase().includes(q) && (!f || st(t) === f)).map(t => `<tr><td><span class="ico d-inline-grid me-2 align-middle"><i class="bi bi-${ic(t)}"></i></span><b>${esc(t.name)}</b> <small class="text-body-secondary">#TLS-${String(t.id).padStart(3, '0')}</small></td><td>${esc(t.cat)}</td><td><b>${money(t.rent)}</b></td><td><div class="d-flex align-items-center gap-2"><button class="btn btn-sm btn-outline-primary px-2" data-adj="-1:${t.id}" title="Remove 1 unit" aria-label="Decrease stock of ${esc(t.name)}"><i class="bi bi-dash-lg"></i></button><b class="text-center" style="min-width:2.2ch">${t.stock}</b><button class="btn btn-sm btn-outline-primary px-2" data-adj="1:${t.id}" title="Add 1 unit" aria-label="Increase stock of ${esc(t.name)}"><i class="bi bi-plus-lg"></i></button></div><div class="progress mt-2" style="height:4px;width:104px"><div class="progress-bar bg-${stc[st(t)]}" style="width:${Math.min(100, Math.round(t.stock / 20 * 100))}%"></div></div></td><td>${badge(st(t), stc[st(t)])}</td><td class="text-end text-nowrap"><button class="btn btn-sm btn-primary me-1" data-restock="${t.id}"><i class="bi bi-plus-circle me-1"></i>Restock +5</button><button class="btn btn-sm btn-outline-danger" data-del="${t.id}" title="Delete ${esc(t.name)}" aria-label="Delete ${esc(t.name)}"><i class="bi bi-trash"></i></button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center text-body-secondary py-4">No tools found.</td></tr>';
   const tq = $('#tQ').value.toLowerCase(), tf = $('#tF').value;
-  $('#txn').innerHTML = txns.filter(t => (t[0] + t[1]).toLowerCase().includes(tq) && (!tf || t[5] === tf)).map(t => `<tr><td><b>${esc(t[0])}</b></td><td>${esc(t[1])}</td><td>${t[2]}</td><td>${t[3]}</td><td><b>${money(t[4])}</b></td><td>${badge(t[5], tc[t[5]])}</td></tr>`).join('') || '<tr><td colspan="6" class="text-center text-body-secondary py-4">No transactions found.</td></tr>';
-  cards('#aCat', $('#cQ').value, $('#cC').value); cards('#uCat', $('#uQ').value, $('#uC').value);
+  renderTxnGrid(tq, tf);
+  $('#txn').innerHTML = txns.filter(t => (t[0] + t[1]).toLowerCase().includes(tq) && (!tf || t[5] === tf)).map(t => {
+    const toolObj = tools.find(tool => tool.name === t[1]) || { name: t[1] };
+    return `<tr><td><b>${esc(t[0])}</b></td><td><span class="ico d-inline-grid me-2 align-middle"><i class="bi bi-${ic(toolObj)}"></i></span><b>${esc(t[1])}</b></td><td>${t[2]}</td><td>${t[3]}</td><td><b>${money(t[4])}</b></td><td>${badge(t[5], tc[t[5]])}</td></tr>`;
+  }).join('') || '<tr><td colspan="6" class="text-center text-body-secondary py-4">No transactions found.</td></tr>';
+  const cq = $('#cQ').value.toLowerCase(), cc = $('#cC').value;
+  renderCatGrid(cq, cc);
+  $('#catTable').innerHTML = tools.filter(t => (t.name + t.cat).toLowerCase().includes(cq) && (!cc || t.cat === cc)).map(t => `<tr><td><span class="ico d-inline-grid me-2 align-middle"><i class="bi bi-${ic(t)}"></i></span><b>${esc(t.name)}</b> <small class="text-body-secondary">#TLS-${String(t.id).padStart(3, '0')}</small></td><td>${esc(t.cat)}</td><td><b>${money(t.rent)}</b></td><td><div class="d-flex align-items-center gap-2"><b class="text-center" style="min-width:2.2ch">${t.stock}</b><span class="small text-body-secondary">${t.stock === 1 ? 'unit' : 'units'}</span></div><div class="progress mt-2" style="height:4px;width:104px"><div class="progress-bar bg-${stc[st(t)]}" style="width:${Math.min(100, Math.round(t.stock / 20 * 100))}%"></div></div></td><td>${badge(st(t), stc[st(t)])}</td><td class="text-end text-nowrap">${t.stock ? `<button class="btn btn-sm btn-primary me-1" data-enq="${t.id}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}<button class="btn btn-sm btn-outline-secondary" data-det="${t.id}"><i class="bi bi-info-circle me-1"></i>Details</button></td></tr>`).join('') || '<tr><td colspan="6" class="text-center text-body-secondary py-4">No tools found.</td></tr>';
+  cards('#uCat', $('#uQ').value, $('#uC').value);
 }
 function show(p) {
   page = p; document.querySelectorAll('.pg').forEach(e => e.classList.toggle('d-none', e.id !== 'p-' + p)); document.querySelectorAll('#nav .nav-link').forEach(b => b.classList.toggle('active', b.dataset.page === p));
@@ -63,5 +81,137 @@ $('#toolForm').addEventListener('submit', e => {
 ['#iQ', '#iF', '#tQ', '#tF', '#cQ', '#cC', '#uQ', '#uC'].forEach(s => $(s).addEventListener('input', render));
 $('#cC').innerHTML = $('#uC').innerHTML = '<option value="">All categories</option>' + CATS.map(c => `<option>${c}</option>`).join(''); $('#fC').innerHTML = CATS.map(c => `<option>${c}</option>`).join('');
 $('#bars').innerHTML = [['Mon', 40], ['Tue', 58], ['Wed', 48], ['Thu', 76], ['Fri', 62], ['Sat', 88], ['Sun', 53]].map(d => `<div><i style="height:${d[1]}%"></i>${d[0]}</div>`).join('');
+
+// ── renderInvGrid: populates the inventory grid view ─────────────────────
+function renderInvGrid(q, f) {
+  const grid = $('#invGrid');
+  if (!grid) return;
+  const list = tools.filter(t =>
+    (t.name + t.cat).toLowerCase().includes(q) && (!f || st(t) === f)
+  );
+  if (!list.length) {
+    grid.innerHTML = '<div class="text-center text-body-secondary py-5" style="grid-column: 1 / -1">No tools found</div>';
+    return;
+  }
+  grid.innerHTML = list.map(t => {
+    const s = st(t);
+    return `<div class="card h-100 lift inv-card">
+        <div class="card-body d-flex flex-column gap-2">
+          <div class="tool-vis"><i class="bi bi-${ic(t)}"></i></div>
+          <div class="inv-card-name">${esc(t.name)}</div>
+          <div class="inv-card-meta">${esc(t.cat)} · ${money(t.rent)}/day</div>
+          <div class="d-flex align-items-center justify-content-between gap-1 flex-wrap my-1">
+            ${badge(s, stc[s])}
+            <span class="small text-body-secondary">Stock: <b>${t.stock}</b></span>
+          </div>
+          <div class="inv-card-actions">
+            <button class="btn btn-outline-primary btn-sm" data-adj="-1:${t.id}" title="Remove 1" aria-label="Decrease stock"><i class="bi bi-dash"></i></button>
+            <button class="btn btn-outline-primary btn-sm" data-adj="1:${t.id}" title="Add 1" aria-label="Increase stock"><i class="bi bi-plus"></i></button>
+            <button class="btn btn-outline-secondary btn-sm" data-restock="${t.id}" title="Restock +5" aria-label="Restock 5 units"><i class="bi bi-arrow-repeat"></i></button>
+            <button class="btn btn-outline-danger btn-sm ms-auto" data-del="${t.id}" title="Delete" aria-label="Delete tool"><i class="bi bi-trash"></i></button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── renderCatGrid: populates the tool catalog grid view ──────────────────
+function renderCatGrid(q, c) {
+  const grid = $('#catGrid');
+  if (!grid) return;
+  const list = tools.filter(t =>
+    (t.name + t.cat).toLowerCase().includes(q) && (!c || t.cat === c)
+  );
+  if (!list.length) {
+    grid.innerHTML = '<div class="text-center text-body-secondary py-5" style="grid-column: 1 / -1">No tools found</div>';
+    return;
+  }
+  grid.innerHTML = list.map(t => {
+    const s = st(t);
+    return `<div class="card h-100 lift inv-card">
+        <div class="card-body d-flex flex-column gap-2">
+          <div class="tool-vis"><i class="bi bi-${ic(t)}"></i></div>
+          <div class="inv-card-name">${esc(t.name)}</div>
+          <div class="inv-card-meta">${esc(t.cat)} · ${money(t.rent)}/day</div>
+          <div class="d-flex align-items-center justify-content-between gap-1 flex-wrap my-1">
+            ${badge(s, stc[s])}
+            <span class="small text-body-secondary">Stock: <b>${t.stock}</b></span>
+          </div>
+          <div class="inv-card-actions">
+            ${t.stock ? `<button class="btn btn-primary btn-sm flex-fill" data-enq="${t.id}" title="Enquire" aria-label="Enquire about ${esc(t.name)}"><i class="bi bi-chat-dots me-1"></i>Enquire</button>` : ''}
+            <button class="btn btn-outline-secondary btn-sm flex-fill" data-det="${t.id}" title="Details" aria-label="Details for ${esc(t.name)}"><i class="bi bi-info-circle me-1"></i>Details</button>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── renderTxnGrid: populates the rental transactions grid view ─────────────
+function renderTxnGrid(q, f) {
+  const grid = $('#txnGrid');
+  if (!grid) return;
+  const list = txns.filter(t =>
+    (t[0] + t[1]).toLowerCase().includes(q) && (!f || t[5] === f)
+  );
+  if (!list.length) {
+    grid.innerHTML = '<div class="text-center text-body-secondary py-5" style="grid-column: 1 / -1">No transactions found</div>';
+    return;
+  }
+  grid.innerHTML = list.map(t => {
+    const toolObj = tools.find(tool => tool.name === t[1]) || { name: t[1] };
+    return `<div class="card h-100 lift inv-card txn-card">
+        <div class="card-body d-flex flex-column gap-2">
+          <div class="tool-vis"><i class="bi bi-${ic(toolObj)}"></i></div>
+          <div class="inv-card-name" title="${esc(t[1])}">${esc(t[1])}</div>
+          <div class="inv-card-meta"><i class="bi bi-person me-1"></i><b>${esc(t[0])}</b></div>
+          <div class="d-flex align-items-center justify-content-between gap-1 flex-wrap my-1">
+            ${badge(t[5], tc[t[5]])}
+            <span class="small fw-bold text-primary-emphasis">${money(t[4])}</span>
+          </div>
+          <div class="inv-card-actions justify-content-between text-body-secondary small w-100">
+            <span class="d-inline-flex align-items-center gap-1" title="Rental date"><i class="bi bi-calendar3"></i>${t[2]}</span>
+            <span class="d-inline-flex align-items-center gap-1" title="Duration"><i class="bi bi-clock-history"></i>${t[3]}</span>
+          </div>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// ── View toggle wiring ────────────────────────────────────────────────────
+document.addEventListener('click', e => {
+  const btn = e.target.closest('.view-btn');
+  if (!btn) return;
+  const view = btn.dataset.view;
+  const targetId = btn.dataset.target;
+  // Update active state within this toggle group
+  btn.closest('.btn-group').querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+
+  if (targetId === 'inv-view' || targetId === 'cat-view' || targetId === 'txn-view') {
+    const parent = $('#' + targetId);
+    if (!parent) return;
+    const listWrap = parent.querySelector('.inv-list-wrap');
+    const gridWrap = parent.querySelector('.inv-grid-wrap');
+    if (view === 'grid') {
+      listWrap.classList.add('d-none');
+      gridWrap.classList.remove('d-none');
+    } else {
+      listWrap.classList.remove('d-none');
+      gridWrap.classList.add('d-none');
+    }
+    render();
+  } else {
+    // Catalog/User: toggle cat-list-view class on the row container
+    const container = $('#' + targetId);
+    if (!container) return;
+    if (view === 'list') {
+      container.classList.add('cat-list-view');
+    } else {
+      container.classList.remove('cat-list-view');
+    }
+    render();
+  }
+});
+
 render(); show('dashboard');
 addEventListener('load', () => { const l = $('#ld'); l.style.opacity = 0; setTimeout(() => l.remove(), 300) });

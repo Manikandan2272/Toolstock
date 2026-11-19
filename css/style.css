@@ -22730,6 +22730,30 @@ body {
   filter: none
 }
 
+.sidebar-footer {
+  margin-top: auto;
+  border-top: 1px solid #e3e9f8;
+  padding-top: 0.85rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  flex-shrink: 0;
+}
+
+.sidebar-footer-title {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #14213d;
+  letter-spacing: 0.01em;
+  line-height: 1.25;
+}
+
+.sidebar-footer-subtitle {
+  font-size: 0.74rem;
+  color: #5d6b8a;
+  line-height: 1.2;
+}
+
 .sb small {
   color: #6b7a9c !important;
   border-color: #e3e9f8 !important
@@ -22862,14 +22886,40 @@ header.bg-body {
 }
 
 .menu-btn {
-  width: 42px;
-  height: 42px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border-radius: .75rem;
-  font-size: 1.4rem;
-  background: #fff
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  width: auto !important;
+  height: auto !important;
+  min-width: 0 !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  color: var(--bs-body-color) !important;
+  cursor: pointer;
+  line-height: 1 !important;
+  transition: color .15s ease;
+}
+
+.menu-btn:hover,
+.menu-btn:focus,
+.menu-btn:focus-visible,
+.menu-btn:active {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  outline: none !important;
+  color: var(--bs-primary) !important;
+}
+
+.menu-btn i,
+.menu-btn .bi {
+  font-size: 1.75rem;
+  line-height: 1;
+  display: block;
 }
 
 @media(max-width:767.98px) {
@@ -22902,6 +22952,9 @@ header.bg-body {
   }
 
   #p-inventory>.card,
+  #p-inventory .inv-list-wrap,
+  #p-catalog .inv-list-wrap,
+  #p-transactions .inv-list-wrap,
   #p-transactions>.card {
     background: transparent;
     border: 0;
@@ -22955,19 +23008,23 @@ header.bg-body {
     flex: none
   }
 
-  #inv td:nth-child(2)::before {
+  #inv td:nth-child(2)::before,
+  #catTable td:nth-child(2)::before {
     content: "Category"
   }
 
-  #inv td:nth-child(3)::before {
+  #inv td:nth-child(3)::before,
+  #catTable td:nth-child(3)::before {
     content: "Rent / day"
   }
 
-  #inv td:nth-child(4)::before {
+  #inv td:nth-child(4)::before,
+  #catTable td:nth-child(4)::before {
     content: "Stock"
   }
 
-  #inv td:nth-child(5)::before {
+  #inv td:nth-child(5)::before,
+  #catTable td:nth-child(5)::before {
     content: "Status"
   }
 
@@ -23008,6 +23065,7 @@ header.bg-body {
   }
 
   #inv td:nth-child(1),
+  #catTable td:nth-child(1),
   #alerts td:nth-child(1) {
     text-align: left;
     justify-content: flex-start;
@@ -23016,18 +23074,21 @@ header.bg-body {
     margin-bottom: .2rem
   }
 
-  #inv td:nth-child(4) {
+  #inv td:nth-child(4),
+  #catTable td:nth-child(4) {
     display: grid;
     grid-template-columns: 1fr auto
   }
 
-  #inv td:nth-child(4)>.progress {
+  #inv td:nth-child(4)>.progress,
+  #catTable td:nth-child(4)>.progress {
     grid-column: 1/-1;
     width: 100% !important;
     margin-top: .4rem !important
   }
 
-  #inv td:nth-child(6) {
+  #inv td:nth-child(6),
+  #catTable td:nth-child(6) {
     justify-content: flex-end;
     border-top: 1px solid #eef2fb;
     margin-top: .3rem;
@@ -23053,4 +23114,190 @@ header.bg-body {
 .app-header {
   height: 64px;
   flex: none;
+}
+
+/* ── View toggle buttons ── */
+.view-toggle .btn {
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  font-size: 1rem;
+  border-radius: 0;
+  flex: none;
+}
+
+.view-toggle .btn:first-child {
+  border-radius: .5rem 0 0 .5rem;
+}
+
+.view-toggle .btn:last-child {
+  border-radius: 0 .5rem .5rem 0;
+}
+
+/* ── Inventory, Catalog & Transactions: Grid view ── */
+#invGrid,
+#catGrid,
+#txnGrid,
+.inv-grid-wrap {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+  width: 100%;
+}
+
+@media (max-width: 991.98px) {
+  #invGrid,
+  #catGrid,
+  #txnGrid,
+  .inv-grid-wrap {
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  #invGrid,
+  #catGrid,
+  #txnGrid,
+  .inv-grid-wrap {
+    grid-template-columns: repeat(2, 1fr);
+    gap: .75rem;
+  }
+}
+
+.txn-card .inv-card-actions {
+  font-size: .74rem;
+}
+
+.inv-grid-wrap .inv-card {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.inv-grid-wrap .inv-card .card-body {
+  padding: .75rem;
+  display: flex;
+  flex-direction: column;
+  gap: .5rem;
+}
+
+.inv-grid-wrap .inv-card .tool-vis {
+  height: 75px;
+  font-size: 1.85rem;
+  border-radius: .65rem;
+}
+
+.inv-grid-wrap .inv-card .inv-card-name {
+  font-weight: 600;
+  font-size: .88rem;
+  line-height: 1.25;
+  color: var(--bs-body-color);
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.inv-grid-wrap .inv-card .inv-card-meta {
+  font-size: .75rem;
+  color: var(--bs-secondary-color);
+  word-break: break-word;
+}
+
+.inv-grid-wrap .inv-card .badge {
+  font-size: .68rem;
+  padding: .28em .55em;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.inv-grid-wrap .inv-card .inv-card-actions {
+  margin-top: auto;
+  display: flex;
+  gap: .3rem;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-top: .35rem;
+  border-top: 1px solid var(--bs-border-color);
+}
+
+.inv-grid-wrap .inv-card .inv-card-actions .btn {
+  padding: .22rem .4rem;
+  font-size: .78rem;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 26px;
+  height: 26px;
+  white-space: nowrap;
+}
+
+/* Catalog / User list view */
+.cat-list-view.row {
+  display: block;
+}
+
+.cat-list-view .col-12 {
+  display: block;
+  width: 100%;
+}
+
+.cat-list-view .card.h-100.lift {
+  border-radius: .75rem;
+  margin-bottom: .6rem;
+}
+
+.cat-list-view .card.h-100.lift .card-body {
+  flex-direction: row !important;
+  align-items: center;
+  gap: 1rem;
+}
+
+.cat-list-view .card.h-100.lift .tool-vis {
+  width: 64px !important;
+  height: 64px !important;
+  font-size: 1.7rem;
+  flex: none;
+  margin: 0 !important;
+}
+
+.cat-list-view .card.h-100.lift .cat-card-body {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: .75rem;
+  flex-wrap: wrap;
+}
+
+.cat-list-view .card.h-100.lift .cat-card-info {
+  flex: 1;
+  min-width: 120px;
+}
+
+.cat-list-view .card.h-100.lift .cat-card-actions {
+  flex: none;
+}
+
+/* ── Mobile scrollbar hiding ── */
+@media (max-width: 768px) {
+  /* Hide webkit scrollbar on mobile */
+  ::-webkit-scrollbar {
+    width: 0 !important;
+    height: 0 !important;
+    display: none;
+  }
+
+  /* Hide Firefox scrollbar on mobile */
+  * {
+    scrollbar-width: none;
+  }
+
+  /* Ensure scrolling still works (scroll via touch) */
+  #scroller {
+    -webkit-overflow-scrolling: touch;
+  }
 }
