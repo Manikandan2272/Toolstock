@@ -24,40 +24,33 @@
         <div class="d-flex align-items-center gap-2 fs-5 fw-bold px-2"><span class="brand-mark"><i
               class="bi bi-tools"></i></span>ToolStock</div>
         <nav class="nav flex-column gap-1" id="nav">
-          <button class="nav-link border-0 bg-transparent adm" data-page="dashboard"><i
+          <button class="nav-link border-0 bg-transparent" data-page="dashboard"><i
               class="bi bi-speedometer2"></i>Dashboard</button>
-          <button class="nav-link border-0 bg-transparent adm" data-page="inventory"><i
+          <button class="nav-link border-0 bg-transparent" data-page="inventory"><i
               class="bi bi-box-seam"></i>Inventory</button>
-          <button class="nav-link border-0 bg-transparent adm" data-page="transactions"><i
+          <button class="nav-link border-0 bg-transparent" data-page="transactions"><i
               class="bi bi-arrow-left-right"></i>Transactions</button>
-          <button class="nav-link border-0 bg-transparent adm" data-page="catalog"><i class="bi bi-grid"></i>Tool
-            Catalog</button>
-          <button class="nav-link border-0 bg-transparent usr d-none" data-page="user"><i
-              class="bi bi-grid"></i>Available Tools</button>
         </nav>
         <div class="sidebar-footer px-2">
-          <div class="sidebar-footer-title">Tool Shop Management</div>
+          <div class="sidebar-footer-title">Iraivan Construction Materials Rental</div>
           <div class="sidebar-footer-subtitle">Demo Prototype</div>
         </div>
       </div>
     </aside>
     <main class="flex-grow-1 d-flex flex-column app-main">
       <header
-        class="sticky-top bg-body border-bottom d-flex align-items-center justify-content-between px-3 px-lg-4 app-header">
-        <div class="d-flex align-items-center gap-2">
-          <button class="btn menu-btn d-lg-none" type="button" data-bs-toggle="offcanvas" data-bs-target="#sb"
-            aria-label="Open menu"><i class="bi bi-list"></i></button>
-          <span class="text-body-secondary d-none d-sm-inline">Workspace <i
-              class="bi bi-chevron-right small"></i></span><b id="crumb">Dashboard</b>
-        </div>
-        <div class="dropdown"><button class="btn btn-light border dropdown-toggle" data-bs-toggle="dropdown"
-            aria-expanded="false"><i class="bi bi-person-circle me-1"></i><span id="roleLbl">Admin</span></button>
-          <ul class="dropdown-menu dropdown-menu-end">
-            <li><button class="dropdown-item" data-role="admin"><i class="bi bi-shield-lock me-2"></i>Admin
-                view</button></li>
-            <li><button class="dropdown-item" data-role="user"><i class="bi bi-people me-2"></i>Customer view</button>
-            </li>
-          </ul>
+        class="sticky-top bg-body border-bottom d-flex align-items-center justify-content-between px-3 px-lg-4 app-header gap-2">
+        <div class="d-flex align-items-center gap-2 min-w-0">
+          <div class="d-flex d-lg-none align-items-center gap-2 mobile-header-brand">
+            <span class="brand-mark sm"><i class="bi bi-tools"></i></span>
+            <div class="mobile-brand-text">
+              <div class="mobile-shop-name">ToolStock</div>
+              <div class="mobile-shop-sub">Iraivan Construction Materials Rental</div>
+            </div>
+          </div>
+          <span class="text-body-secondary d-none d-lg-inline text-uppercase fw-semibold">Iraivan Construction Materials
+            Rental
+            <i class="bi bi-chevron-right small"></i></span><b class="d-none d-lg-inline" id="crumb">Dashboard</b>
         </div>
       </header>
       <div class="flex-grow-1 overflow-auto" id="scroller">
@@ -67,7 +60,7 @@
               <h1 class="h3 fw-bold mb-1" id="ttl"></h1>
               <div class="text-body-secondary" id="sub"></div>
             </div>
-            <button class="btn btn-primary text-nowrap" id="addBtn"><i class="bi bi-plus-lg me-1"></i>Add tool</button>
+            <button class="btn btn-primary text-nowrap" id="addBtn">Add tool</button>
           </div>
 
           <section class="pg" id="p-dashboard">
@@ -76,10 +69,8 @@
                     class="bi bi-stars me-1"></i>Today at the shop</span>
                 <h2 class="h3 fw-bold">Welcome back to ToolStock</h2>
                 <p class="mb-3 opacity-75">Track rentals, stock and returns in one place.</p>
-                <div class="d-flex flex-wrap gap-2"><button class="btn btn-light fw-semibold text-primary-emphasis"
-                    onclick="document.getElementById('addBtn').click()"><i class="bi bi-plus-lg me-1"></i>Add
-                    tool</button><button class="btn btn-outline-light" data-page="transactions"><i
-                      class="bi bi-arrow-left-right me-1"></i>View rentals</button></div>
+                <div class="d-flex flex-wrap gap-2"><button class="btn btn-outline-light" data-page="transactions">View
+                    rentals</button></div>
               </div>
             </div>
             <div class="row g-3 mb-3" id="dStats"></div>
@@ -134,6 +125,7 @@
                     aria-label="Search tools"></div>
               </div>
               <div class="col-12 col-md-auto d-flex gap-2">
+                <select class="form-select cat-sel" id="iC" aria-label="Category filter"></select>
                 <select class="form-select" id="iF" aria-label="Stock filter">
                   <option value="">All stock</option>
                   <option>In Stock</option>
@@ -141,21 +133,22 @@
                   <option>Out of Stock</option>
                 </select>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="invViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list"
-                    data-target="inv-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="inv-view"
-                    aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="grid"
+                    data-target="inv-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list" data-target="inv-view"
+                    aria-label="List view"><i class="bi bi-list-ul"></i></button>
                 </div>
               </div>
             </div>
             <div id="inv-view">
-              <div class="card inv-list-wrap">
+              <div class="card inv-list-wrap d-none">
                 <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0">
                     <thead>
                       <tr>
                         <th>Tool</th>
                         <th>Category</th>
+                        <th>Condition</th>
                         <th>Rent / day</th>
                         <th>Stock</th>
                         <th>Status</th>
@@ -166,7 +159,7 @@
                   </table>
                 </div>
               </div>
-              <div class="inv-grid-wrap d-none" id="invGrid"></div>
+              <div class="inv-grid-wrap" id="invGrid"></div>
             </div>
           </section>
 
@@ -175,7 +168,8 @@
             <div class="row g-2 mb-3 align-items-center">
               <div class="col-12 col-md">
                 <div class="input-group"><span class="input-group-text"><i class="bi bi-search"></i></span><input
-                    class="form-control" id="tQ" placeholder="Search customer or tool" aria-label="Search transactions">
+                    class="form-control" id="tQ" placeholder="Search customer, phone, or tool"
+                    aria-label="Search transactions">
                 </div>
               </div>
               <div class="col-12 col-md-auto d-flex gap-2">
@@ -184,171 +178,167 @@
                   <option>Active</option>
                   <option>Overdue</option>
                   <option>Returned</option>
+                  <option>Cancelled</option>
                 </select>
                 <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="txnViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list"
-                    data-target="txn-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="txn-view"
-                    aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="grid"
+                    data-target="txn-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
+                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list" data-target="txn-view"
+                    aria-label="List view"><i class="bi bi-list-ul"></i></button>
+
                 </div>
               </div>
             </div>
             <div id="txn-view">
-              <div class="card inv-list-wrap">
+              <div class="card inv-list-wrap d-none">
                 <div class="table-responsive">
                   <table class="table table-hover align-middle mb-0">
                     <thead>
                       <tr>
-                        <th>Customer</th>
                         <th>Tool</th>
-                        <th>Date</th>
-                        <th>Duration</th>
-                        <th>Amount</th>
+                        <th>Customer</th>
+                        <th>Rental Period</th>
+                        <th>Amount &amp; Deposit</th>
                         <th>Status</th>
+                        <th class="text-end">Actions</th>
                       </tr>
                     </thead>
                     <tbody id="txn"></tbody>
                   </table>
                 </div>
               </div>
-              <div class="inv-grid-wrap d-none" id="txnGrid"></div>
-            </div>
-          </section>
-
-          <section class="pg d-none" id="p-catalog">
-            <div class="row g-2 mb-3 align-items-center">
-              <div class="col-12 col-md">
-                <div class="input-group"><span class="input-group-text"><i class="bi bi-search"></i></span><input
-                    class="form-control" id="cQ" placeholder="Search tools by name or category"
-                    aria-label="Search catalog"></div>
-              </div>
-              <div class="col-12 col-md-auto d-flex gap-2">
-                <select class="form-select cat-sel" id="cC" aria-label="Category"></select>
-                <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="catViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="list"
-                    data-target="cat-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="grid" data-target="cat-view"
-                    aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
-                </div>
-              </div>
-            </div>
-            <div id="cat-view">
-              <div class="card inv-list-wrap">
-                <div class="table-responsive">
-                  <table class="table table-hover align-middle mb-0">
-                    <thead>
-                      <tr>
-                        <th>Tool</th>
-                        <th>Category</th>
-                        <th>Rent / day</th>
-                        <th>Stock</th>
-                        <th>Status</th>
-                        <th class="text-end">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="catTable"></tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="inv-grid-wrap d-none" id="catGrid"></div>
-            </div>
-          </section>
-
-          <section class="pg d-none" id="p-user">
-            <div class="row g-3 mb-3" id="uStats"></div>
-            <div class="row g-2 mb-3 align-items-center">
-              <div class="col-12 col-md">
-                <div class="input-group">
-                  <span class="input-group-text"><i class="bi bi-search"></i></span>
-                  <input class="form-control" id="uQ" placeholder="Search tools by name..."
-                    aria-label="Search tools by name">
-                </div>
-              </div>
-              <div class="col-12 col-md-auto d-flex flex-wrap gap-2">
-                <select class="form-select cat-sel" id="uC" aria-label="Category"
-                  style="min-width:140px;width:auto;"></select>
-                <select class="form-select" id="uCond" aria-label="Condition" style="min-width:130px;width:auto;">
-                  <option value="">All conditions</option>
-                  <option value="Excellent">Excellent</option>
-                  <option value="Good">Good</option>
-                  <option value="Fair">Fair</option>
-                </select>
-                <select class="form-select" id="uS" aria-label="Status filter" style="min-width:130px;width:auto;">
-                  <option value="">All statuses</option>
-                  <option value="In Stock">In Stock</option>
-                  <option value="Low Stock">Low Stock</option>
-                  <option value="Out of Stock">Out of Stock</option>
-                </select>
-                <button type="button" class="btn btn-outline-secondary" id="uClear" title="Clear filters"
-                  aria-label="Clear filters">
-                  <i class="bi bi-x-circle me-1"></i>Clear
-                </button>
-                <div class="btn-group view-toggle" role="group" aria-label="View toggle" id="userViewToggle">
-                  <button type="button" class="btn btn-outline-primary view-btn" data-view="list"
-                    data-target="user-view" aria-label="List view"><i class="bi bi-list-ul"></i></button>
-                  <button type="button" class="btn btn-outline-primary view-btn active" data-view="grid"
-                    data-target="user-view" aria-label="Grid view"><i class="bi bi-grid-3x2-gap"></i></button>
-                </div>
-              </div>
-            </div>
-            <div id="user-view">
-              <div class="card inv-list-wrap d-none">
-                <div class="table-responsive">
-                  <table class="table table-hover align-middle mb-0">
-                    <thead>
-                      <tr>
-                        <th>Tool Name</th>
-                        <th>Category</th>
-                        <th>Condition</th>
-                        <th>Location</th>
-                        <th>Availability Status</th>
-                        <th class="text-end">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody id="userTable"></tbody>
-                  </table>
-                </div>
-              </div>
-              <div class="inv-grid-wrap" id="userGrid"></div>
+              <div class="inv-grid-wrap" id="txnGrid"></div>
             </div>
           </section>
         </div>
 
       </div>
-      <footer class="foot" style="flex:none;padding-bottom:env(safe-area-inset-bottom,0)">
+      <footer class="foot d-none d-lg-block" style="flex:none;padding-bottom:env(safe-area-inset-bottom,0)">
         <div class="foot-copy">© 2026 ToolStock. All rights reserved.</div>
       </footer>
+      <nav class="mobile-bottom-nav d-lg-none" id="mobileNav" aria-label="Main navigation">
+        <button class="mobile-nav-item" type="button" data-page="dashboard">
+          <span class="mobile-nav-icon"><i class="bi bi-speedometer2"></i></span>
+          <span class="mobile-nav-label">Dashboard</span>
+        </button>
+        <button class="mobile-nav-item" type="button" data-page="inventory">
+          <span class="mobile-nav-icon"><i class="bi bi-box-seam"></i></span>
+          <span class="mobile-nav-label">Inventory</span>
+        </button>
+        <button class="mobile-nav-item" type="button" data-page="transactions">
+          <span class="mobile-nav-icon"><i class="bi bi-arrow-left-right"></i></span>
+          <span class="mobile-nav-label">Transactions</span>
+        </button>
+      </nav>
     </main>
   </div>
 
   <div class="modal fade" id="toolModal" tabindex="-1" aria-labelledby="tmT" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered">
-      <form class="modal-content needs-validation" id="toolForm" novalidate>
-        <div class="modal-header">
-          <h2 class="modal-title h5" id="tmT">Add a new tool</h2><button type="button" class="btn-close"
-            data-bs-dismiss="modal" aria-label="Close"></button>
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <form class="modal-content app-modal-content needs-validation" id="toolForm" novalidate>
+        <div class="modal-header app-modal-header">
+          <h2 class="modal-title h5 fw-bold mb-0 text-truncate" id="tmT">Add a new tool</h2><button type="button"
+            class="btn-close flex-shrink-0" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
-        <div class="modal-body d-grid gap-3">
+        <div class="modal-body d-flex flex-column gap-3">
+          <input type="hidden" id="editToolId" value="">
           <div><label class="form-label" for="fN">Tool name</label><input class="form-control" id="fN" required
               maxlength="60" placeholder="e.g. Rotary Hammer Drill">
             <div class="invalid-feedback">Please enter a tool name.</div>
           </div>
-          <div><label class="form-label" for="fC">Category</label><select class="form-select cat-sel2" id="fC"></select>
+          <div class="row g-3">
+            <div class="col-12 col-sm-6"><label class="form-label" for="fC">Category</label><select
+                class="form-select cat-sel2" id="fC"></select>
+            </div>
+            <div class="col-12 col-sm-6"><label class="form-label" for="fCond">Condition</label><select
+                class="form-select" id="fCond">
+                <option value="Excellent">Excellent</option>
+                <option value="Good" selected>Good</option>
+                <option value="Fair">Fair</option>
+              </select>
+            </div>
+          </div>
+          <div><label class="form-label" for="fLoc">Storage location</label><input class="form-control" id="fLoc"
+              required maxlength="40" placeholder="e.g. Aisle A-1" value="Main Storage">
+            <div class="invalid-feedback">Please enter a storage location.</div>
           </div>
           <div class="row g-3">
-            <div class="col"><label class="form-label" for="fR">Rent per day (₹)</label><input class="form-control"
-                id="fR" type="number" min="1" required>
+            <div class="col-12 col-sm-6"><label class="form-label" for="fR">Rent per day (₹)</label><input
+                class="form-control" id="fR" type="number" inputmode="numeric" min="1" step="1" placeholder="e.g. 250"
+                required>
               <div class="invalid-feedback">Enter a rent above 0.</div>
             </div>
-            <div class="col"><label class="form-label" for="fS">Available stock</label><input class="form-control"
-                id="fS" type="number" min="0" required>
+            <div class="col-12 col-sm-6"><label class="form-label" for="fS">Available stock</label><input
+                class="form-control" id="fS" type="number" inputmode="numeric" min="0" step="1" placeholder="e.g. 10"
+                required>
               <div class="invalid-feedback">Enter stock (0 or more).</div>
             </div>
           </div>
         </div>
-        <div class="modal-footer"><button type="button" class="btn btn-outline-secondary"
-            data-bs-dismiss="modal">Cancel</button><button class="btn btn-primary"><i
-              class="bi bi-check-lg me-1"></i>Save tool</button></div>
+        <div class="modal-footer app-modal-footer"><button type="button" class="btn btn-outline-secondary"
+            data-bs-dismiss="modal">Cancel</button><button type="submit" class="btn btn-primary" id="saveToolBtn">Save
+            tool</button></div>
+      </form>
+    </div>
+  </div>
+  <div class="modal fade" id="rentModal" tabindex="-1" aria-labelledby="rentT" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+      <form class="modal-content app-modal-content rent-modal-content needs-validation" id="rentForm" novalidate>
+        <div class="modal-header app-modal-header rent-modal-header">
+          <div class="min-w-0 flex-grow-1">
+            <h2 class="modal-title h5 fw-bold mb-0 text-truncate" id="rentT">Rent Tool</h2>
+            <div class="small text-body-secondary text-truncate" id="rentSub">Fill in the rental details below</div>
+          </div>
+          <button type="button" class="btn-close flex-shrink-0" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body d-flex flex-column gap-3">
+          <input type="hidden" id="rToolId" value="">
+          <div>
+            <label class="form-label fw-medium" for="rCust">Customer Name <span class="text-danger">*</span></label>
+            <input class="form-control rent-input" id="rCust" type="text" required maxlength="60"
+              placeholder="Enter customer full name">
+            <div class="invalid-feedback">Please enter the customer name.</div>
+          </div>
+          <div>
+            <label class="form-label fw-medium" for="rPhone">Mobile Number <span class="text-danger">*</span></label>
+            <div class="input-group has-validation rent-phone-group">
+              <span class="input-group-text fw-semibold" id="rCountryCode">+91</span>
+              <input class="form-control rent-input" id="rPhone" type="tel" inputmode="numeric" pattern="[0-9]{10}"
+                minlength="10" maxlength="10" required placeholder="9876543210" aria-describedby="rCountryCode">
+              <div class="invalid-feedback">Please enter a valid 10-digit mobile number.</div>
+            </div>
+          </div>
+          <div class="row g-3">
+            <div class="col-12 col-sm-6">
+              <label class="form-label fw-medium" for="rStart">Rental Start Date <span
+                  class="text-danger">*</span></label>
+              <input class="form-control rent-input" id="rStart" type="date" required>
+              <div class="invalid-feedback">Please select a rental start date.</div>
+            </div>
+            <div class="col-12 col-sm-6">
+              <label class="form-label fw-medium" for="rEnd">Rental End Date <span class="text-danger">*</span></label>
+              <input class="form-control rent-input" id="rEnd" type="date" required>
+              <div class="invalid-feedback">End date must be on or after the start date.</div>
+            </div>
+          </div>
+          <div>
+            <div class="d-flex justify-content-between align-items-center flex-wrap gap-1 mb-1">
+              <label class="form-label fw-medium mb-0" for="rQty">Number of Items <span
+                  class="text-danger">*</span></label>
+              <span class="small text-body-secondary" id="rAvailHint"></span>
+            </div>
+            <input class="form-control rent-input" id="rQty" type="number" min="1" step="1" value="1" required>
+            <div class="invalid-feedback" id="rQtyErr">Enter at least 1 item (within available stock).</div>
+          </div>
+        </div>
+        <div class="modal-footer app-modal-footer rent-modal-footer">
+          <button type="button" class="btn btn-outline-secondary rounded-3 px-3" data-bs-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary rounded-3 px-4" id="confirmRentBtn">
+            <span class="spinner-border spinner-border-sm me-1 d-none" id="rentSpin" role="status"
+              aria-hidden="true"></span>
+            Confirm Rental
+          </button>
+        </div>
       </form>
     </div>
   </div>
@@ -366,27 +356,19 @@
     </div>
   </div>
   <div class="modal fade" id="detModal" tabindex="-1" aria-labelledby="detT" aria-hidden="true">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-fullscreen-sm-down">
       <div class="modal-content">
         <div class="modal-header">
-          <h2 class="modal-title h6" id="detT"><i class="bi bi-info-circle me-2"></i>Tool details</h2><button
-            class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <h2 class="modal-title h6 mb-0" id="detT">Tool details</h2><button class="btn-close" data-bs-dismiss="modal"
+            aria-label="Close"></button>
         </div>
         <div class="modal-body" id="detB"></div>
-        <div class="modal-footer"><button class="btn btn-outline-secondary"
-            data-bs-dismiss="modal">Close</button><button class="btn btn-primary" id="detEnq" data-bs-dismiss="modal"><i
-              class="bi bi-chat-dots me-1"></i>Enquire</button></div>
+        <div class="modal-footer"><button class="btn btn-outline-secondary" data-bs-dismiss="modal">Close</button></div>
       </div>
     </div>
   </div>
-  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:1090">
-    <div class="toast align-items-center text-bg-primary border-0" id="toast" role="status" aria-live="polite">
-      <div class="d-flex">
-        <div class="toast-body" id="toastB"></div><button class="btn-close btn-close-white me-2 m-auto"
-          data-bs-dismiss="toast" aria-label="Close"></button>
-      </div>
-    </div>
-  </div>
+  <div class="toolstock-toast-container position-fixed top-0 end-0 p-3" id="toolstockToastContainer" aria-live="polite"
+    aria-atomic="true"></div>
   <script src="js/script.js"></script>
 </body>
 

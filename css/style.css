@@ -17278,7 +17278,7 @@ fieldset:disabled .btn {
 }
 
 .bi-justify-left::before {
-  content: "\f449"
+  ... [truncated for diff preview] content: "\f449"
 }
 
 .bi-justify-right::before {
@@ -22896,55 +22896,6 @@ header.bg-body {
   }
 }
 
-.menu-btn {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  margin: 0 !important;
-  width: auto !important;
-  height: auto !important;
-  min-width: 0 !important;
-  align-items: center !important;
-  justify-content: center !important;
-  color: var(--bs-body-color) !important;
-  cursor: pointer;
-  line-height: 1 !important;
-  transition: color .15s ease;
-}
-
-/* Show hamburger only on mobile; d-lg-none hides it on ≥992px */
-@media (max-width: 991.98px) {
-  .menu-btn {
-    display: inline-flex !important;
-  }
-}
-
-@media (min-width: 992px) {
-  .menu-btn {
-    display: none !important;
-  }
-}
-
-.menu-btn:hover,
-.menu-btn:focus,
-.menu-btn:focus-visible,
-.menu-btn:active {
-  background: transparent !important;
-  border: 0 !important;
-  box-shadow: none !important;
-  outline: none !important;
-  color: var(--bs-primary) !important;
-}
-
-.menu-btn i,
-.menu-btn .bi {
-  font-size: 1.75rem;
-  line-height: 1;
-  display: block;
-}
-
 @media(max-width:767.98px) {
   #ttl {
     font-size: 1.3rem
@@ -23033,57 +22984,39 @@ header.bg-body {
     flex: none
   }
 
-  #inv td:nth-child(2)::before,
-  #catTable td:nth-child(2)::before,
-  #userTable td:nth-child(2)::before {
+  #inv td:nth-child(2)::before {
     content: "Category"
   }
 
-  #userTable td:nth-child(3)::before {
+  #inv td:nth-child(3)::before {
     content: "Condition"
   }
 
-  #userTable td:nth-child(4)::before {
-    content: "Location"
-  }
-
-  #inv td:nth-child(3)::before,
-  #catTable td:nth-child(3)::before {
+  #inv td:nth-child(4)::before {
     content: "Rent / day"
   }
 
-  #inv td:nth-child(4)::before,
-  #catTable td:nth-child(4)::before {
+  #inv td:nth-child(5)::before {
     content: "Stock"
   }
 
-  #inv td:nth-child(5)::before,
-  #catTable td:nth-child(5)::before,
-  #userTable td:nth-child(5)::before {
-    content: "Availability Status"
-  }
-
-  #txn td:nth-child(1)::before {
-    content: "Customer"
+  #inv td:nth-child(6)::before {
+    content: "Status"
   }
 
   #txn td:nth-child(2)::before {
-    content: "Tool"
+    content: "Customer"
   }
 
   #txn td:nth-child(3)::before {
-    content: "Date"
+    content: "Rental Period"
   }
 
   #txn td:nth-child(4)::before {
-    content: "Duration"
+    content: "Amount & Deposit"
   }
 
   #txn td:nth-child(5)::before {
-    content: "Amount"
-  }
-
-  #txn td:nth-child(6)::before {
     content: "Status"
   }
 
@@ -23100,8 +23033,6 @@ header.bg-body {
   }
 
   #inv td:nth-child(1),
-  #catTable td:nth-child(1),
-  #userTable td:nth-child(1),
   #alerts td:nth-child(1) {
     text-align: left;
     justify-content: flex-start;
@@ -23110,22 +23041,19 @@ header.bg-body {
     margin-bottom: .2rem
   }
 
-  #inv td:nth-child(4),
-  #catTable td:nth-child(4) {
+  #inv td:nth-child(5) {
     display: grid;
     grid-template-columns: 1fr auto
   }
 
-  #inv td:nth-child(4)>.progress,
-  #catTable td:nth-child(4)>.progress {
+  #inv td:nth-child(5)>.progress {
     grid-column: 1/-1;
     width: 100% !important;
     margin-top: .4rem !important
   }
 
-  #inv td:nth-child(6),
-  #catTable td:nth-child(6),
-  #userTable td:nth-child(6) {
+  #inv td:nth-child(7),
+  #txn td:nth-child(8) {
     justify-content: flex-end;
     border-top: 1px solid #eef2fb;
     margin-top: .3rem;
@@ -23179,12 +23107,34 @@ header.bg-body {
 #txnGrid,
 .inv-grid-wrap {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.15rem;
   width: 100%;
 }
 
-@media (max-width: 991.98px) {
+@media (min-width: 2000px) {
+
+  #invGrid,
+  #catGrid,
+  #txnGrid,
+  .inv-grid-wrap {
+    grid-template-columns: repeat(6, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (min-width: 1600px) and (max-width: 1999.98px) {
+
+  #invGrid,
+  #catGrid,
+  #txnGrid,
+  .inv-grid-wrap {
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.25rem;
+  }
+}
+
+@media (max-width: 1199.98px) {
 
   #invGrid,
   #catGrid,
@@ -23202,7 +23152,18 @@ header.bg-body {
   #txnGrid,
   .inv-grid-wrap {
     grid-template-columns: repeat(2, 1fr);
-    gap: .75rem;
+    gap: .85rem;
+  }
+}
+
+@media (max-width: 479.98px) {
+
+  #invGrid,
+  #catGrid,
+  #txnGrid,
+  .inv-grid-wrap {
+    grid-template-columns: 1fr;
+    gap: .85rem;
   }
 }
 
@@ -23215,19 +23176,48 @@ header.bg-body {
   display: flex;
   flex-direction: column;
   height: 100%;
+  margin: 0;
 }
 
 .inv-grid-wrap .inv-card .card-body {
-  padding: .75rem;
+  padding: .9rem;
   display: flex;
   flex-direction: column;
-  gap: .5rem;
+  gap: .55rem;
+}
+
+@media (max-width: 991.98px) {
+  .inv-grid-wrap .inv-card .card-body {
+    padding: .85rem;
+    gap: .5rem;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .inv-grid-wrap .inv-card .card-body {
+    padding: .95rem;
+    gap: .55rem;
+  }
 }
 
 .inv-grid-wrap .inv-card .tool-vis {
-  height: 75px;
-  font-size: 1.85rem;
+  height: 90px;
+  font-size: 2.2rem;
   border-radius: .65rem;
+}
+
+@media (max-width: 1399.98px) {
+  .inv-grid-wrap .inv-card .tool-vis {
+    height: 80px;
+    font-size: 2rem;
+  }
+}
+
+@media (max-width: 767.98px) {
+  .inv-grid-wrap .inv-card .tool-vis {
+    height: 70px;
+    font-size: 1.75rem;
+  }
 }
 
 .inv-grid-wrap .inv-card .inv-card-name {
@@ -23263,62 +23253,38 @@ header.bg-body {
 }
 
 .inv-grid-wrap .inv-card .inv-card-actions .btn {
-  padding: .22rem .4rem;
-  font-size: .78rem;
+  padding: .32rem .55rem;
+  font-size: .8rem;
   line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: 26px;
-  height: 26px;
+  min-width: 30px;
+  height: 30px;
   white-space: nowrap;
 }
 
-/* Catalog / User list view */
-.cat-list-view.row {
-  display: block;
+@media (max-width: 1399.98px) {
+  .inv-grid-wrap .inv-card .inv-card-actions .btn {
+    padding: .28rem .45rem;
+    font-size: .78rem;
+    min-width: 28px;
+    height: 28px;
+  }
 }
 
-.cat-list-view .col-12 {
-  display: block;
-  width: 100%;
-}
+@media (max-width: 767.98px) {
+  .inv-grid-wrap .inv-card .inv-card-actions {
+    gap: .35rem;
+    padding-top: .5rem;
+  }
 
-.cat-list-view .card.h-100.lift {
-  border-radius: .75rem;
-  margin-bottom: .6rem;
-}
-
-.cat-list-view .card.h-100.lift .card-body {
-  flex-direction: row !important;
-  align-items: center;
-  gap: 1rem;
-}
-
-.cat-list-view .card.h-100.lift .tool-vis {
-  width: 64px !important;
-  height: 64px !important;
-  font-size: 1.7rem;
-  flex: none;
-  margin: 0 !important;
-}
-
-.cat-list-view .card.h-100.lift .cat-card-body {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: .75rem;
-  flex-wrap: wrap;
-}
-
-.cat-list-view .card.h-100.lift .cat-card-info {
-  flex: 1;
-  min-width: 120px;
-}
-
-.cat-list-view .card.h-100.lift .cat-card-actions {
-  flex: none;
+  .inv-grid-wrap .inv-card .inv-card-actions .btn {
+    padding: .3rem .5rem;
+    font-size: .78rem;
+    min-width: 32px;
+    height: 32px;
+  }
 }
 
 /* ── Mobile scrollbar hiding ── */
@@ -23343,182 +23309,1298 @@ header.bg-body {
 }
 
 
-/* ── Available Tools (User Catalog) Improvements ── */
-
-/* Empty / no-results state */
-.user-empty-state {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 3rem 1.5rem;
-  border: 2px dashed var(--bs-border-color);
-  border-radius: 1rem;
-  margin: .5rem 0;
-  background: rgba(255, 255, 255, .5);
-}
-
 /* Sidebar footer: clean spacing */
 .sidebar-footer {
   padding-top: .75rem;
   padding-bottom: .5rem;
 }
 
-/* List view table styling */
-#userTable td {
-  vertical-align: middle;
-}
-
-/* ── Available Tools Grid View: 6-col desktop responsive layout ── */
-#userGrid {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 1rem;
-  width: 100%;
-}
-
-/* Laptop: 4 columns (~1200px and below) */
-@media (max-width: 1399.98px) {
-  #userGrid {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-
-/* Tablet: 3 columns (~992px and below) */
-@media (max-width: 991.98px) {
-  #userGrid {
-    grid-template-columns: repeat(3, 1fr);
-    gap: .85rem;
-  }
-}
-
-/* Mobile: 2 columns (~576px and below) */
-@media (max-width: 575.98px) {
-  #userGrid {
-    grid-template-columns: repeat(2, 1fr);
-    gap: .65rem;
-  }
-}
-
-/* Small mobile: 1 column (~380px and below) */
-@media (max-width: 379.98px) {
-  #userGrid {
-    grid-template-columns: 1fr;
-    gap: .65rem;
-  }
-}
-
-/* ── User Tool Card Styles ── */
-.user-tool-card {
-  min-width: 0;
-  transition: box-shadow .18s ease, transform .18s ease;
-}
-
-.user-tool-card:hover {
-  box-shadow: 0 8px 28px rgba(27, 58, 158, .14);
-  transform: translateY(-2px);
-}
-
-.user-tool-card .card-body {
-  padding: .85rem;
-}
-
-.user-tool-card .tool-vis {
-  height: 80px;
-  font-size: 2rem;
-  border-radius: .75rem;
-  margin-bottom: .2rem;
-}
-
-.user-tool-card .inv-card-name {
-  font-weight: 700;
-  font-size: .9rem;
-  line-height: 1.25;
-  color: var(--bs-body-color);
-  word-break: break-word;
-  overflow-wrap: break-word;
-}
-
-.user-tool-card .inv-card-meta {
-  font-size: .75rem;
-  color: var(--bs-secondary-color);
-}
-
-/* Detail rows inside user card */
-.user-card-details {
+/* ── ToolStock Toast Notification System ─────────────────────────────────── */
+.toolstock-toast-container {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2050;
   display: flex;
   flex-direction: column;
-  gap: .3rem;
-  margin-top: .15rem;
+  gap: 0.75rem;
+  pointer-events: none;
+  max-width: 380px;
+  width: calc(100% - 2rem);
 }
 
-.user-card-detail-row {
+.toolstock-toast {
+  pointer-events: auto;
+  position: relative;
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px -3px rgba(15, 23, 42, 0.12), 0 4px 6px -4px rgba(15, 23, 42, 0.08);
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  border-left-width: 5px;
+  padding: 0.85rem 1rem;
+  font-family: 'Outfit', var(--bs-font-sans-serif);
+  overflow: hidden;
+  will-change: transform, opacity;
+  animation: toolstockToastSlideIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  transition: transform 0.25s ease, opacity 0.25s ease;
+}
+
+.toolstock-toast.toolstock-toast-hiding {
+  animation: toolstockToastSlideOut 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+@keyframes toolstockToastSlideIn {
+  from {
+    opacity: 0;
+    transform: translateX(115%);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes toolstockToastSlideOut {
+  0% {
+    opacity: 1;
+    transform: translateX(0) scale(1);
+    max-height: 140px;
+    margin-bottom: 0;
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateX(115%) scale(0.95);
+    max-height: 0;
+    margin-bottom: -0.75rem;
+    padding-top: 0;
+    padding-bottom: 0;
+    border-width: 0;
+  }
+}
+
+.toolstock-toast-header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: .4rem;
-  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-bottom: 0.35rem;
 }
 
-.user-card-label {
-  font-size: .72rem;
-  color: var(--bs-secondary-color);
-  white-space: nowrap;
+.toolstock-toast-title {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: -0.01em;
 }
 
-.user-card-loc {
-  font-size: .72rem;
+.toolstock-toast-title i {
+  font-size: 0.95rem;
+  color: #0d6efd;
+}
+
+.toolstock-toast-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  color: var(--bs-body-color);
-  text-align: right;
+  padding: 0.2rem 0.55rem;
+  border-radius: 9999px;
+  line-height: 1.2;
+}
+
+.toolstock-toast-badge i {
+  font-size: 0.75rem;
+}
+
+.toolstock-toast-message {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  color: #475569;
   word-break: break-word;
 }
 
-.user-card-badge {
-  font-size: .65rem;
-  padding: .2em .5em;
+/* Success */
+.toolstock-toast-success {
+  border-left-color: #198754;
 }
 
-/* Actions row at the bottom */
-.user-tool-card .inv-card-actions {
-  margin-top: .35rem;
-  display: flex;
-  gap: .35rem;
-  align-items: center;
-  padding-top: .45rem;
-  border-top: 1px solid var(--bs-border-color);
+.toolstock-toast-success .toolstock-toast-badge {
+  background-color: #d1e7dd;
+  color: #0a3622;
+  border: 1px solid #a3cfbb;
 }
 
-.user-tool-card .inv-card-actions .btn {
-  font-size: .8rem;
-  padding: .3rem .55rem;
-  line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  white-space: nowrap;
+.toolstock-toast-success .toolstock-toast-badge i {
+  color: #198754;
 }
 
-/* On very small cards (many columns), shrink text a bit */
-@media (max-width: 1199.98px) {
-  .user-tool-card .inv-card-name {
-    font-size: .82rem;
+/* Error */
+.toolstock-toast-error {
+  border-left-color: #dc3545;
+}
+
+.toolstock-toast-error .toolstock-toast-badge {
+  background-color: #f8d7da;
+  color: #58151c;
+  border: 1px solid #f1aeb5;
+}
+
+.toolstock-toast-error .toolstock-toast-badge i {
+  color: #dc3545;
+}
+
+/* Warning */
+.toolstock-toast-warning {
+  border-left-color: #f59e0b;
+}
+
+.toolstock-toast-warning .toolstock-toast-badge {
+  background-color: #fff3cd;
+  color: #664d03;
+  border: 1px solid #ffe69c;
+}
+
+.toolstock-toast-warning .toolstock-toast-badge i {
+  color: #d97706;
+}
+
+/* Information */
+.toolstock-toast-info {
+  border-left-color: #0dcaf0;
+}
+
+.toolstock-toast-info .toolstock-toast-badge {
+  background-color: #cff4fc;
+  color: #055160;
+  border: 1px solid #9eeaf9;
+}
+
+.toolstock-toast-info .toolstock-toast-badge i {
+  color: #0891b2;
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 575.98px) {
+  .toolstock-toast-container {
+    top: 0.75rem;
+    right: 0.75rem;
+    left: 0.75rem;
+    width: auto;
+    max-width: none;
   }
 
-  .user-tool-card .inv-card-actions .btn {
-    font-size: .74rem;
-    padding: .25rem .4rem;
+  .toolstock-toast {
+    padding: 0.75rem 0.85rem;
+  }
+}
+
+/* ── Mobile & Tablet Header Brand & Bottom Navigation (<992px) ───────────── */
+.min-w-0 {
+  min-width: 0;
+}
+
+.mobile-header-brand {
+  min-width: 0;
+}
+
+.mobile-brand-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.mobile-shop-name {
+  font-size: 0.96rem;
+  font-weight: 700;
+  color: #14213d;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mobile-shop-sub {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #5d6b8a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 991.98px) {
+  .foot {
+    display: none !important;
+  }
+
+  #scroller>.p-3 {
+    padding-bottom: calc(5.5rem + env(safe-area-inset-bottom, 0px)) !important;
+  }
+
+  .mobile-bottom-nav {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1030;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: stretch;
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-top: 1px solid #e3e9f8;
+    box-shadow: 0 -4px 20px rgba(20, 33, 61, 0.08);
+    padding: 0.35rem 0.25rem calc(0.35rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-nav-item {
+    appearance: none;
+    border: 0;
+    background: transparent;
+    padding: 0.25rem 0.2rem;
+    min-height: 52px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.2rem;
+    color: #5d6b8a;
+    cursor: pointer;
+    border-radius: 0.65rem;
+    transition: color 0.15s ease, background-color 0.15s ease;
+    -webkit-tap-highlight-color: transparent;
+    min-width: 0;
+  }
+
+  .mobile-nav-item:hover,
+  .mobile-nav-item:focus-visible {
+    color: #2F5BD9;
+  }
+
+  .mobile-nav-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 26px;
+    border-radius: 999px;
+    font-size: 1.2rem;
+    line-height: 1;
+    transition: background-color 0.18s ease, color 0.18s ease, transform 0.15s ease;
+  }
+
+  .mobile-nav-label {
+    font-size: 0.68rem;
+    font-weight: 500;
+    line-height: 1.15;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 100%;
+    padding: 0 2px;
+  }
+
+  .mobile-nav-item.active {
+    color: #2F5BD9;
+  }
+
+  .mobile-nav-item.active .mobile-nav-icon {
+    background: #EAF0FF;
+    color: #2F5BD9;
+    transform: translateY(-1px);
+  }
+
+  .mobile-nav-item.active .mobile-nav-label {
+    font-weight: 700;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 991.98px) {
+  .mobile-shop-name {
+    font-size: 1.05rem;
+  }
+
+  .mobile-shop-sub {
+    font-size: 0.74rem;
+  }
+
+  .mobile-bottom-nav {
+    grid-template-columns: repeat(3, minmax(120px, 180px));
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.45rem 1rem calc(0.45rem + env(safe-area-inset-bottom, 0px));
+  }
+
+  .mobile-nav-item {
+    min-height: 54px;
+    padding: 0.3rem 0.5rem;
+  }
+
+  .mobile-nav-item:hover {
+    background: rgba(234, 240, 255, 0.55);
+  }
+
+  .mobile-nav-label {
+    font-size: 0.76rem;
+  }
+}
+
+/* ── Shared Add Tool & Rent Tool Modal UI ────────────────────────────────── */
+.app-modal-content {
+  border-radius: 1.1rem;
+  overflow: hidden;
+}
+
+.app-modal-header {
+  background: linear-gradient(135deg, #f6f8ff 0%, #eef3ff 100%);
+  border-bottom: 1px solid #e3e9f8;
+  padding: 1rem 1.25rem;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.app-modal-content .modal-body {
+  padding: 1.25rem;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+}
+
+.app-modal-content .modal-body>* {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.app-modal-content .form-control,
+.app-modal-content .form-select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.app-modal-footer {
+  border-top: 1px solid #e3e9f8;
+  padding: 0.9rem 1.25rem;
+  background: #fafbff;
+  gap: 0.65rem;
+  flex-shrink: 0;
+}
+
+.rent-input {
+  border-radius: 0.65rem;
+  padding: 0.55rem 0.85rem;
+  border-color: #d7e0f5;
+}
+
+.rent-phone-group .input-group-text {
+  border-radius: 0.65rem 0 0 0.65rem;
+  background: #eef3ff;
+  color: #1B3A9E;
+  border-color: #d7e0f5;
+  white-space: nowrap;
+  flex: 0 0 auto;
+}
+
+.rent-phone-group .rent-input {
+  border-radius: 0 0.65rem 0.65rem 0;
+  min-width: 0;
+  flex: 1 1 0%;
+}
+
+
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TOOLSTOCK — INVENTORY PAGE FULL RESPONSIVE PATCH
+   Applied after all other custom styles.
+   Breakpoints: 575.98px (xs→sm), 767.98px (sm→md), 991.98px (md→lg)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── A. App Header: auto-height on small screens ─────────────────────────── */
+@media (max-width: 575.98px) {
+  .app-header {
+    height: auto;
+    min-height: 52px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+  }
+
+  .mobile-shop-name {
+    font-size: 0.88rem;
+  }
+
+  .mobile-shop-sub {
+    font-size: 0.62rem;
+  }
+}
+
+/* ── B. Page title + Add Tool button row ─────────────────────────────────── */
+@media (max-width: 575.98px) {
+
+  /* Wrap title and button to separate rows on xs screens */
+  .p-3>.d-flex.justify-content-between.align-items-start,
+  .p-lg-4>.d-flex.justify-content-between.align-items-start {
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  #addBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ── C. KPI Summary cards — prevent overflow on tiny screens ─────────────── */
+@media (max-width: 359.98px) {
+  .row.g-3>[class*="col-6"] .card-body {
+    padding: 0.75rem 0.6rem;
+  }
+
+  .card .fs-3 {
+    font-size: 1.25rem !important;
+  }
+}
+
+/* ── D. Inventory Toolbar: search + selects + view toggle ────────────────── */
+@media (max-width: 767.98px) {
+
+  /* Category and stock selects fill remaining width evenly */
+  #p-inventory .col-12.col-md-auto .form-select {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  /* Ensure the whole filter row wraps cleanly */
+  #p-inventory .col-12.col-md-auto {
+    width: 100%;
   }
 }
 
 @media (max-width: 575.98px) {
-  .user-tool-card .tool-vis {
-    height: 68px;
-    font-size: 1.75rem;
+
+  /* Keep category select, stock select, and view toggle aligned on mobile */
+  #p-inventory .col-12.col-md-auto {
+    flex-wrap: nowrap;
+    gap: 0.5rem !important;
   }
 
-  .user-tool-card .inv-card-name {
-    font-size: .82rem;
+  #iC,
+  #iF {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+
+  .cat-sel {
+    flex: 1 1 0;
+  }
+}
+
+@media (max-width: 379.98px) {
+  #p-inventory .col-12.col-md-auto {
+    flex-wrap: wrap;
+  }
+
+  #iC,
+  #iF,
+  .cat-sel {
+    flex: 1 1 calc(50% - 0.25rem);
+    min-width: 110px;
+  }
+
+  #invViewToggle {
+    margin-left: auto;
+  }
+}
+
+/* ── E. Transaction Toolbar: status filter + view toggle ─────────────────── */
+@media (max-width: 767.98px) {
+  #p-transactions .col-12.col-md-auto {
+    width: 100%;
+  }
+
+  #tF {
+    flex: 1 1 0;
+    min-width: 0;
+  }
+}
+
+/* ── F. Inventory Grid Cards — action buttons layout ─────────────────────── */
+.inv-card-actions {
+  flex-wrap: wrap;
+  gap: 0.35rem;
+}
+
+.inv-card-actions .btn {
+  flex: none;
+}
+
+/* ── G. Detail modal: fullscreen on mobile (≤575px) ──────────────────────── */
+@media (max-width: 575.98px) {
+  #detModal .modal-dialog {
+    margin: 0;
+    max-width: 100%;
+    width: 100%;
+    min-height: 100%;
+    display: flex;
+    align-items: stretch;
+  }
+
+  #detModal .modal-content {
+    border-radius: 0;
+    min-height: 100vh;
+    min-height: 100dvh;
+    max-height: 100vh;
+    max-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+  }
+
+  #detModal .modal-header,
+  #detModal .modal-footer {
+    flex-shrink: 0;
+  }
+
+  #detModal .modal-body {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    flex: 1 1 auto;
+  }
+}
+
+/* ── H. Hero section buttons on tiny screens ─────────────────────────────── */
+@media (max-width: 400px) {
+  .hero .d-flex.flex-wrap.gap-2>.btn {
+    width: 100%;
+  }
+
+  .hero .big {
+    display: none;
+  }
+}
+
+/* ── I. Table list-view: actions column fix ──────────────────────────────── */
+/* Already handled by existing stacked-table CSS for #inv td:nth-child(7)
+   and #txn td:nth-child(8) — but ensure action buttons wrap gracefully */
+@media (max-width: 767.98px) {
+
+  #inv td:nth-child(7) .btn,
+  #txn td:nth-child(8) .btn {
+    white-space: nowrap;
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
+  }
+
+  #inv td:nth-child(7),
+  #txn td:nth-child(8) {
+    flex-wrap: wrap;
+    gap: 0.3rem;
+  }
+}
+
+/* ── J. Inventory stats cards: fix col-6 padding on xs ──────────────────── */
+@media (max-width: 374.98px) {
+
+  #iStats.row>[class*="col"],
+  #tStats.row>[class*="col"],
+  #dStats.row>[class*="col"] {
+    padding-left: 0.4rem;
+    padding-right: 0.4rem;
+  }
+
+  #iStats .card-body,
+  #tStats .card-body,
+  #dStats .card-body {
+    padding: 0.65rem 0.5rem;
+  }
+}
+
+/* ── K. Toolbar rows: prevent gap overflow ───────────────────────────────── */
+@media (max-width: 575.98px) {
+
+  #p-inventory .row.g-2.mb-3,
+  #p-transactions .row.g-2.mb-3 {
+    --bs-gutter-x: 0.5rem;
+    --bs-gutter-y: 0.5rem;
+  }
+}
+
+/* ── L. Scroller padding with bottom-nav on tablet ───────────────────────── */
+@media (min-width: 576px) and (max-width: 991.98px) {
+  #scroller>.p-3 {
+    padding-left: 1.25rem !important;
+    padding-right: 1.25rem !important;
+  }
+}
+
+/* ── M. Del/Detail modal: keep small, centered on mobile ─────────────────── */
+@media (max-width: 575.98px) {
+  #delModal .modal-dialog {
+    margin: 1.5rem 1rem;
+    max-width: calc(100% - 2rem);
+  }
+
+  #delModal .modal-content {
+    border-radius: 1rem;
+    min-height: auto;
+  }
+}
+
+/* ── N. View toggle buttons: tap-friendly size on mobile ─────────────────── */
+@media (max-width: 575.98px) {
+  .view-toggle .btn {
+    width: 42px;
+    height: 42px;
+  }
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TOOLSTOCK — WEB VIEW (DESKTOP & TABLET) RESPONSIVE IMPROVEMENTS
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* ── P. Desktop: stat card name font scaling ─────────────────────────────── */
+@media (min-width: 992px) {
+  .card .fs-3 {
+    font-size: 1.75rem !important;
+  }
+
+  /* Toolbar: keep search + filters on one row; give search more room */
+  #p-inventory .row.g-2.mb-3,
+  #p-transactions .row.g-2.mb-3 {
+    flex-wrap: nowrap;
+    align-items: center;
+  }
+
+  #p-inventory .col-12.col-md-auto,
+  #p-transactions .col-12.col-md-auto {
+    flex: none;
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
+  }
+
+  #iC,
+  #iF {
+    min-width: 150px;
+  }
+
+  #tF {
+    min-width: 160px;
+  }
+}
+
+/* ── Q. Desktop: dashboard performance chart taller ─────────────────────── */
+@media (min-width: 992px) {
+  .bars {
+    height: 200px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .bars {
+    height: 220px;
+  }
+}
+
+/* ── R. Desktop: inventory card name and meta slightly bigger ────────────── */
+@media (min-width: 1200px) {
+  .inv-grid-wrap .inv-card .inv-card-name {
+    font-size: .9rem;
+  }
+
+  .inv-grid-wrap .inv-card .inv-card-meta {
+    font-size: .78rem;
+  }
+}
+
+/* ── S. Desktop: hero section padding and icon ───────────────────────────── */
+@media (min-width: 992px) {
+  .hero {
+    padding: 2rem 2.5rem;
+  }
+
+  .hero .big {
+    font-size: 10rem;
+  }
+
+  .hero h2 {
+    font-size: 1.75rem;
+  }
+}
+
+/* ── T. Desktop: table padding more comfortable ──────────────────────────── */
+@media (min-width: 992px) {
+  .table> :not(caption)>*>* {
+    padding: .9rem 1.1rem;
+  }
+}
+
+/* ── U. Desktop: modal sizing – max-width cap ────────────────────────────── */
+@media (min-width: 576px) {
+  #toolModal .modal-dialog {
+    max-width: 480px;
+  }
+
+  #rentModal .modal-dialog {
+    max-width: 460px;
+  }
+
+  #detModal .modal-dialog {
+    max-width: 500px;
+  }
+}
+
+@media (min-width: 768px) {
+  #toolModal .modal-dialog {
+    max-width: 520px;
+  }
+
+  #rentModal .modal-dialog {
+    max-width: 480px;
+  }
+
+  #detModal .modal-dialog {
+    max-width: 540px;
+  }
+}
+
+/* ── V. Tablet (768–991px): 3-column grid + comfortable card body ─────────── */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+  #invGrid,
+  #txnGrid,
+  .inv-grid-wrap {
+    grid-template-columns: repeat(3, 1fr);
+    gap: .95rem;
+  }
+
+  .inv-grid-wrap .inv-card .card-body {
+    padding: .85rem;
+  }
+}
+
+/* ── W. Tablet: toolbar wraps in one line ────────────────────────────────── */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+  #p-inventory .row.g-2.mb-3,
+  #p-transactions .row.g-2.mb-3 {
+    flex-wrap: nowrap;
+  }
+
+  #p-inventory .col-12.col-md-auto,
+  #p-transactions .col-12.col-md-auto {
+    flex: none;
+  }
+
+  #iC,
+  #iF {
+    max-width: 155px;
+  }
+}
+
+/* ── X. Desktop: stock alert table shows all columns cleanly ─────────────── */
+@media (min-width: 992px) {
+
+  #alerts th,
+  #alerts td {
+    font-size: .88rem;
+  }
+}
+
+/* ── Y. Desktop & 4K: wrapper max-width and padding for ultra-wide screens ── */
+@media (min-width: 1800px) {
+  #scroller>.p-3.p-lg-4 {
+    max-width: 1920px;
+    width: 100%;
+    margin-inline: auto;
+    padding-left: 2.5rem !important;
+    padding-right: 2.5rem !important;
+  }
+}
+
+/* ── Z. Desktop inv/txn grid: card name truncation for very long names ────── */
+.inv-grid-wrap .inv-card .inv-card-name {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ══════════════════════════════════════════════════════════════════════════
+   TOOLSTOCK — MOBILE UI IMPROVEMENTS (ADD TOOL MODAL & TRANSACTIONS LIST)
+   ══════════════════════════════════════════════════════════════════════════ */
+
+/* Desktop/Tablet: keep .txn-tool-cell inline with table flow */
+.txn-tool-cell {
+  display: inline-flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.txn-tool-info {
+  min-width: 0;
+}
+
+/* ── 1. Add Tool & Rent Tool Modals Responsive Layout ────────────────────── */
+@media (max-width: 575.98px) {
+  #toolModal,
+  #rentModal {
+    --bs-modal-margin: 0.75rem;
+  }
+
+  #toolModal .modal-dialog,
+  #rentModal .modal-dialog {
+    width: calc(100vw - 1.5rem);
+    max-width: 480px;
+    margin: 0.75rem auto;
+  }
+
+  #toolModal .modal-content,
+  #rentModal .modal-content {
+    max-height: calc(100dvh - 1.5rem);
+    border-radius: 1rem;
+  }
+
+  .app-modal-header {
+    padding: 0.9rem 1rem;
+  }
+
+  .app-modal-header .modal-title {
+    font-size: 1.05rem;
+    line-height: 1.25;
+  }
+
+  .app-modal-content .modal-body {
+    padding: 1rem;
+    gap: 0.85rem !important;
+  }
+
+  .app-modal-content .modal-body .row {
+    --bs-gutter-x: 0.75rem;
+    --bs-gutter-y: 0.85rem;
+  }
+
+  .app-modal-content .form-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    margin-bottom: 0.35rem;
+    color: #14213d;
+  }
+
+  .app-modal-content .form-control,
+  .app-modal-content .form-select,
+  .rent-phone-group .input-group-text {
+    min-height: 44px;
+    font-size: 1rem;
+  }
+
+  .app-modal-content .form-control,
+  .app-modal-content .form-select {
+    border-radius: 0.65rem;
+    padding: 0.55rem 0.85rem;
+    border-color: #d7e0f5;
+  }
+
+  .app-modal-content .invalid-feedback {
+    font-size: 0.8rem;
+    margin-top: 0.25rem;
+  }
+
+  .app-modal-footer {
+    padding: 0.85rem 1rem;
+    flex-wrap: nowrap;
+  }
+
+  .app-modal-footer .btn {
+    flex: 1 1 0;
+    margin: 0;
+    min-height: 44px;
+    border-radius: 0.65rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 359.98px) {
+  #toolModal,
+  #rentModal {
+    --bs-modal-margin: 0.5rem;
+  }
+
+  #toolModal .modal-dialog,
+  #rentModal .modal-dialog {
+    width: calc(100vw - 1rem);
+    margin: 0.5rem auto;
+  }
+
+  #toolModal .modal-content,
+  #rentModal .modal-content {
+    max-height: calc(100dvh - 1rem);
+  }
+
+  .app-modal-header {
+    padding: 0.8rem 0.85rem;
+  }
+
+  .app-modal-content .modal-body {
+    padding: 0.85rem;
+    gap: 0.75rem !important;
+  }
+
+  .app-modal-footer {
+    padding: 0.75rem 0.85rem;
+    gap: 0.5rem;
+  }
+
+  .app-modal-footer .btn {
+    font-size: 0.88rem;
+    padding-inline: 0.65rem !important;
+  }
+}
+
+@media (max-height: 600px) {
+  #toolModal .modal-content,
+  #rentModal .modal-content {
+    max-height: calc(100dvh - 1rem);
+  }
+}
+
+/* ── 2. Rental Transactions List View (#txn) Mobile Card Layout ──────────── */
+@media (max-width: 767.98px) {
+
+  #p-transactions .inv-list-wrap,
+  #p-transactions .inv-list-wrap .table-responsive {
+    overflow-x: hidden;
+  }
+
+  #txn tr {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.55rem;
+    background: #ffffff;
+    border: 1px solid #e3e9f8;
+    border-radius: 1rem;
+    margin-bottom: 0.9rem;
+    padding: 0.9rem;
+    box-shadow: 0 6px 20px rgba(27, 58, 158, 0.07);
+    overflow: hidden;
+  }
+
+  /* Reset default stacked-table cell styles for #txn */
+  #txn td {
+    display: block;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+    border: 0;
+    text-align: left;
+  }
+
+  /* Card Header: Tool icon, name, code, and category pill */
+  #txn td:nth-child(1) {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    padding: 0 0 0.45rem 0;
+  }
+
+  #txn td:nth-child(1)::before {
+    content: none;
+  }
+
+  #txn td:nth-child(1) .txn-tool-cell {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+    width: 100%;
+    min-width: 0;
+  }
+
+  #txn td:nth-child(1) .ico {
+    width: 48px;
+    height: 48px;
+    font-size: 1.35rem;
+    border-radius: 0.75rem;
+    margin-right: 0 !important;
+    background: linear-gradient(145deg, #2F5BD9, #1B3A9E);
+    color: #ffffff;
+    box-shadow: 0 4px 10px rgba(47, 91, 217, 0.22);
+  }
+
+  #txn td:nth-child(1) .txn-tool-info {
+    flex: 1 1 auto;
+    min-width: 0;
+  }
+
+  #txn td:nth-child(1) .txn-tool-info b {
+    display: block;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    color: #0f172a;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  #txn td:nth-child(1) .txn-tool-info small {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #5d6b8a !important;
+    margin-top: 0.1rem;
+  }
+
+  #txn .txn-m-cat {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: #EAF0FF;
+    color: #1B3A9E;
+    font-size: 0.7rem;
+    font-weight: 600;
+    padding: 0.28rem 0.6rem;
+    border-radius: 999px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    align-self: flex-start;
+  }
+
+  /* 4 Detail Info Boxes (Customer, Status, Rental Period, Amount & Deposit) */
+  #txn td:nth-child(2),
+  #txn td:nth-child(3),
+  #txn td:nth-child(4),
+  #txn td:nth-child(5) {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    column-gap: 0.55rem;
+    row-gap: 0.15rem;
+    align-items: start;
+    background: #f8faff;
+    border: 1px solid #edf2fc;
+    border-radius: 0.75rem;
+    padding: 0.6rem 0.7rem;
+  }
+
+  #txn td:nth-child(2) {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  #txn td:nth-child(5) {
+    grid-column: 2;
+    grid-row: 2;
+  }
+
+  #txn td:nth-child(3) {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  #txn td:nth-child(4) {
+    grid-column: 2;
+    grid-row: 3;
+  }
+
+  #txn td:nth-child(2) .txn-m-ico,
+  #txn td:nth-child(3) .txn-m-ico,
+  #txn td:nth-child(4) .txn-m-ico,
+  #txn td:nth-child(5) .txn-m-ico {
+    grid-column: 1;
+    grid-row: 1 / span 2;
+    font-size: 1rem;
+    color: #2F5BD9;
+    margin-top: 0.08rem;
+  }
+
+  #txn td:nth-child(5) .txn-m-ico-status {
+    color: #16a34a;
+  }
+
+  #txn td:nth-child(2)::before,
+  #txn td:nth-child(3)::before,
+  #txn td:nth-child(4)::before,
+  #txn td:nth-child(5)::before {
+    grid-column: 2;
+    grid-row: 1;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    font-weight: 600;
+    color: #5d6b8a;
+    text-align: left;
+    line-height: 1.2;
+  }
+
+  #txn td .txn-cell-val {
+    grid-column: 2;
+    grid-row: 2;
+    min-width: 0;
+    text-align: left;
+    font-size: 0.85rem;
+    line-height: 1.3;
+    color: #0f172a;
+    overflow-wrap: break-word;
+    word-break: break-word;
+  }
+
+  #txn td .txn-cell-val b {
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  #txn td .txn-cell-val .small {
+    font-size: 0.74rem;
+    margin-top: 0.15rem;
+  }
+
+  /* Status box: align badge nicely */
+  #txn td:nth-child(5) .txn-status-val .badge {
+    font-size: 0.72rem;
+    padding: 0.25em 0.55em;
+  }
+
+  /* Rental period: dates + duration pill */
+  #txn td:nth-child(3) .txn-dates {
+    font-weight: 600;
+    font-size: 0.75rem;
+    color: #0f172a;
+    margin-top: 0 !important;
+  }
+
+  #txn td:nth-child(3) .txn-duration-wrap {
+    margin-top: 0.3rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.25rem;
+  }
+
+  #txn td:nth-child(3) .txn-duration-pill {
+    display: inline-flex;
+    align-items: center;
+    background: #e8f0fe;
+    color: #1B3A9E;
+    border-radius: 999px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+  }
+
+  /* Amount & Deposit inline with separator */
+  #txn td:nth-child(4) .txn-pay-val {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.25rem;
+  }
+
+  #txn td:nth-child(4) .txn-pay-val b {
+    font-size: 0.98rem;
+    color: #1B3A9E;
+  }
+
+  #txn td:nth-child(4) .txn-pay-sep {
+    color: #cbd5e1;
+    font-size: 0.8rem;
+  }
+
+  #txn td:nth-child(4) .txn-dep-val {
+    margin-top: 0 !important;
+    font-size: 0.74rem;
+  }
+
+  /* Card footer: Return Tool button */
+  #txn td:nth-child(6) {
+    grid-column: 1 / -1;
+    grid-row: 4;
+    padding: 0.2rem 0 0 0;
+    margin: 0;
+    border: 0;
+    white-space: normal !important;
+  }
+
+  #txn td:nth-child(6).txn-no-action {
+    display: none;
+  }
+
+  /* Empty state row */
+  #txn td[colspan] {
+    grid-column: 1 / -1;
+    justify-content: center;
+    text-align: center;
+    padding: 1.5rem 0.5rem;
+  }
+}
+
+/* Very narrow mobile screens (<360px): stack detail boxes into 1 column */
+@media (max-width: 359.98px) {
+  #txn tr {
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
+    gap: 0.45rem;
+  }
+
+  #txn td:nth-child(2),
+  #txn td:nth-child(3),
+  #txn td:nth-child(4),
+  #txn td:nth-child(5),
+  #txn td:nth-child(6) {
+    grid-column: 1;
+    grid-row: auto;
+  }
+
+  #txn td:nth-child(1) {
+    grid-row: 1;
+  }
+
+  #txn td:nth-child(1) .txn-tool-cell {
+    flex-wrap: wrap;
+  }
+}
+
+/* ── 3. Shared Return Tool Button (.txn-return-btn) across List & Grid ───── */
+.txn-return-btn {
+  min-height: 36px;
+  padding: 0.35rem 0.75rem;
+  background-color: #16a34a;
+  border-color: #16a34a;
+  color: #ffffff;
+  font-size: 0.85rem;
+  font-weight: 600;
+  border-radius: 0.65rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+}
+
+.txn-return-btn:hover,
+.txn-return-btn:active {
+  background-color: #15803d;
+  border-color: #15803d;
+  color: #ffffff;
+}
+
+#txnGrid .txn-return-btn {
+  min-height: 38px;
+}
+
+@media (max-width: 767.98px) {
+  #txn td:nth-child(6) .txn-return-btn,
+  #txnGrid .txn-return-btn {
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.92rem;
+    border-radius: 0.75rem;
+    gap: 0.45rem;
   }
 }
